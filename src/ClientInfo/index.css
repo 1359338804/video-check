@@ -1,0 +1,48 @@
+.ClientInfo{
+    display: auto;
+    font-size: 12px;
+    color: #666;
+    box-sizing: border-box;
+    flex: 1;
+    max-height: 320px;
+    overflow: auto;
+}
+.ClientInfo .ClientInfo-list{
+    border: 1px solid #aaa;
+    position: relative;
+    padding: 20px;
+    width: 100%;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+
+}
+.ClientInfo .ClientInfo-list>span{
+    position: absolute;
+    left: 20px;
+    top: -10px;
+    background-color: #fff;
+    padding: 0 5px;
+}
+.ClientInfo .ClientInfo-list .ClientInfo-list-title{
+    width: 100%;
+    padding: 10px 0;
+}
+.ClientInfo .ClientInfo-list .ClientInfo-list-title > div{
+    display: inline-block;
+    width: 33.33%;
+    box-sizing: border-box;
+    
+}
+.ClientInfo .ClientInfo-list .ClientInfo-list-title > div > b{
+    display: inline-block;
+    width: 19%;
+    text-align: center;
+}
+.ClientInfo .ClientInfo-list .ClientInfo-list-title > div > span{
+    display: inline-block;
+    width: 80%;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    overflow:hidden;
+    vertical-align: text-bottom;
+}

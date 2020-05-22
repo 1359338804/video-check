@@ -1,0 +1,16 @@
+.Button{
+    padding: .4em 1em;
+    font-size: 12px;
+    font-family: "微软雅黑","宋体","Tahoma","Verdana";
+    border-radius: 4px ;
+    border:1px solid #d3d3d3;
+    background: #e5e5e5;
+    color: #666;
+    cursor:pointer;
+    display: inline-block;
+    margin: 0 5px;
+}
+.Button:hover{
+    border:1px solid #999;
+    background-color: #efefef;
+}
