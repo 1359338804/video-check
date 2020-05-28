@@ -1,0 +1,34 @@
+.form-tpl{
+  flex: 1;
+  padding:0 20px;
+  box-sizing: border-box;
+}
+.ant-tabs .ant-tabs-bar {
+  margin-bottom: 24px;
+  text-align: center;
+  border-bottom: 0;
+}
+
+.ant-form-item {
+  margin: 0 2px 32px;
+}
+
+.main .ant-input{
+  height: 40px;
+}
+.getCaptcha {
+  display: block;
+  width: 100%;
+}
+.icon {
+  margin-left: 16px;
+  color: rgba(0, 0, 0, 0.2);
+  font-size: 24px;
+  vertical-align: middle;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.submit {
+  width: 100%;
+  margin-top: 24px;
+}

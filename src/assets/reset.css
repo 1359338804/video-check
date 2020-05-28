@@ -1,0 +1,46 @@
+.ant-btn-primary{
+    background-color: #d3ba62;
+    border-color: #d3ba62;
+}
+.ant-btn-primary:hover, .ant-btn-primary:focus {
+    color: #fff;
+    background-color: #d3ba62;
+    border-color: #d3ba62;
+}
+.ant-btn-link{
+    background-color: none;
+    border-color: #d3ba62;
+    color: #d3ba62;
+}
+.ant-btn-link:hover, .ant-btn-link:focus {
+    color: #d3ba62;
+    background-color: transparent;
+    border-color: #d3ba62;
+}
+.theme-color{
+    color: #d3ba62;
+}
+.ant-pagination-item-active a {
+    color: #d3ba62;
+}
+.ant-pagination-item-active a {
+    color: #d3ba62;
+}
+.ant-pagination-item-active a:hover {
+    color: #d3ba62;
+}
+.ant-pagination-item-active a:active {
+    color: #d3ba62;
+}
+.ant-pagination-item:focus, .ant-pagination-item:hover{
+    color: #d3ba62;
+}
+.ant-pagination-item-active:focus a, .ant-pagination-item-active:hover a{
+    color: #d3ba62;
+}
+.ant-pagination-item-active:focus, .ant-pagination-item-active:hover{
+    color: #d3ba62;
+}
+.ant-pagination-item-active{
+    border-color: #d3ba62;
+}

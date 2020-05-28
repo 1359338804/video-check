@@ -1,19 +1,20 @@
 import React from 'react';
-import {Router,Route,Switch} from 'react-router-dom';
+import { HashRouter, Route } from 'react-router-dom'
 import { createHashHistory } from "history";
 import Login from '../Login/index'
-
-
+import VideoList from '../VideoList/index'
+import Video from '../Video/index'
+import Home from '../Home/index'
 const history = createHashHistory();
 class RouterConfig extends React.Component{
     render(){
         return(
-            <Router history={history}>
-                <Switch>
-                    <Route path='/' component={Login}/>
-                    <Route path='/Login' component={Login}/>
-                </Switch>
-            </Router>
+            <HashRouter>
+                <Route exact path='/' component={Login}/>
+                <Route exact path='/Login' component={Login}/>
+                <Route exact path='/Home' component={Home}/>
+                <Route exact path='/Video' component={Video}/>
+            </HashRouter>
         )
     }
 }

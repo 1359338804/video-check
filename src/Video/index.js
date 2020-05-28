@@ -1,9 +1,11 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import './index.css';
-import Submit from '../Submit/index';
-import ClientInfo from '../ClientInfo/index';
-
+import '../config.js';
+import { Button } from 'antd';
+import Cookies from 'js-cookie'
+import Header from '../Header/index.js';
+import Footer from '../Footer/index';
 import Modal from 'antd/es/modal'; // 加载 JS
 import 'antd/es/modal/style/css'; // 加载 CSS
 
@@ -15,24 +17,28 @@ const { confirm } = Modal;
 
 const opts = {
     userId: '',
-    sdkAppId: 1400223297,
+    sdkAppId: 1400376311, //1400223297,
     userSig: '',
     roomid: '',
 }
 
-const url = 'http://10.1.1.226:8081/ZRRZZL/';
-
 // 创建视频窗口
 function createVideoElement(id, isLocal) {
     var videoDiv = document.createElement("div");
-    videoDiv.innerHTML = '<video id="' + id + '" autoplay ' + (isLocal ? 'muted' : '') + ' playsinline ></video><div calss="SoundMeter" style="height:3px;background-color: #0f0;margin-top: -4px;width:0%"></div>';
-    document.querySelector(".Video-div").appendChild(videoDiv);
+    if(id == "local"){
+        videoDiv.innerHTML = '<video id="' + id + '" autoplay ' + (isLocal ? 'muted' : '') + ' playsinline ></video><div calss="SoundMeter" style="height:3px;background-color: #0f0;margin-top: -4px;width:0%"></div>';
+        document.querySelector(".customer-service").appendChild(videoDiv);
+    }else{
+        videoDiv.innerHTML = '<video class="far-video" id="' + id + '" autoplay ' + (isLocal ? 'muted' : '') + ' playsinline ></video><div calss="SoundMeter" style="height:3px;background-color: #0f0;margin-top: -4px;width:0%"></div>';
+        document.querySelector(".coustom-video").appendChild(videoDiv);
+    }
     return document.getElementById(id);
 }
  //是用来获取url中的参数的值的 根据参数名获取参数值
 function getQueryString(name) {
     var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
-    var r = window.location.search.substr(1).match(reg);
+    var r = window.location.href.substr(1).match(reg);
+    console.log(r)
     if (r != null) {
         return unescape(r[2]);
     }
@@ -59,30 +65,45 @@ class Video extends React.Component {
             RTC: null,
             videoStreaming: true,
             data:{},
+            changeT:null
         };
     }
     // 生命周期挂载
     componentDidMount() {
-        opts.userId = uncompileStr(getQueryString('userid'));
-        opts.userSig = uncompileStr(getQueryString('usersig'));
-        opts.roomid = uncompileStr(getQueryString('roomid'));
+        let that = this;
+        if(!Cookies.get('userName')){
+            this.props.history.push('/Login');
+        }
+        opts.userId = uncompileStr(that.getQueryString('userid'));
+        opts.userSig = uncompileStr(that.getQueryString('usersig'));
+        opts.roomid = uncompileStr(that.getQueryString('roomid'));
         console.log(opts.userId,opts.userSig,opts.roomid);
-        setInterval(this.changTitl,1000)
+        that.setState({
+            changeT:setInterval(this.changTitl,1000)
+        });
         this.WebRTC()
-        fetch(`${url}VideoFacebookServlet?basqbh=${opts.roomid}&cxlx=personInfo`, {
+        // 获取用户信息
+        fetch(`${global.constants.apiUrl}VideoFacebookServlet?basqbh=${opts.roomid}&cxlx=personInfo`, {
             method: 'POST',
         })
-            .then(res => res.json())
-            .then(res => {
-                this.setState({
-                    data:res.date
-                })
-                
+        .then(res => res.json())
+        .then(res => {
+            this.setState({
+                data:res.date
             })
+        })
     }
+    getQueryString(name) {
+        var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+        var r = this.props.location.search.substr(1).match(reg);
+        if (r != null) {
+            return unescape(r[2]);
+        }
+        return null;
+    };
     // 生命周期卸载
     componentWillUnmount() {
-
+        clearInterval(this.state.changeT);
     }
     // 腾讯云视频初始化
     WebRTC() {
@@ -243,6 +264,7 @@ class Video extends React.Component {
  
     //发送审核结果
     VideoFacebookServlet(mqshzt){
+        var that = this;
         confirm({
             title: `你确定已审核完成,并选择"${mqshzt === '1'?'同意':'拒绝'}"?`,
             content: `点击${mqshzt === '1'?'同意':'拒绝'}后,会关闭当前页面,结束本次通话`,
@@ -250,7 +272,7 @@ class Video extends React.Component {
             cancelText:'取消',
             onOk() {
                 return new Promise((resolve, reject) => {
-                    fetch(`${url}VideoFacebookServlet?basqbh=${opts.roomid}&mqshzt=${mqshzt}&cxlx=facebookResult`, {
+                    fetch(`${global.constants.apiUrl}VideoFacebookServlet?basqbh=${opts.roomid}&mqshzt=${mqshzt}&cxlx=facebookResult`, {
                         method: 'POST',
                     })
                         .then(res => res.json())
@@ -261,7 +283,8 @@ class Video extends React.Component {
                 .then((res)=>{
                     console.log('res: ', res);
                     if(res.code === "000000"){
-                        window.opener=null;window.open('','_self');window.close();
+                        // window.opener=null;window.open('','_self');window.close();
+                        that.props.history.goBack()
                     }else{
                         message.error(res.message);
                     }
@@ -274,20 +297,38 @@ class Video extends React.Component {
     //设置title
     changTitl(){
         this.focus();
-        if(document.title === `【　视频面签中　】 ${opts.userId} 正在为申请编号【${opts.roomid}】的客户进行视频面签。如意外关闭当前页面，可再【视频面签表】中找到对应申请编号，进行重连`){
-             document.title = `【　　　　　　　】 ${opts.userId} 正在为申请编号【${opts.roomid}】的客户进行视频面签。如意外关闭当前页面，可再【视频面签表】中找到对应申请编号，进行重连`;
+        if(document.title === `【　视频面签中　】${opts.userId} 正在为申请编号【${opts.roomid}】的客户进行视频面签。如意外关闭当前页面，可再【视频面签表】中找到对应申请编号，进行重连`){
+             document.title = `【　　　　　　　】${opts.userId} 正在为申请编号【${opts.roomid}】的客户进行视频面签。如意外关闭当前页面，可再【视频面签表】中找到对应申请编号，进行重连`;
         }else{
-             document.title = `【　视频面签中　】 ${opts.userId} 正在为申请编号【${opts.roomid}】的客户进行视频面签。如意外关闭当前页面，可再【视频面签表】中找到对应申请编号，进行重连`;
+             document.title = `【　视频面签中　】${opts.userId} 正在为申请编号【${opts.roomid}】的客户进行视频面签。如意外关闭当前页面，可再【视频面签表】中找到对应申请编号，进行重连`;
         }
     }
     render() {
         return (
             <div className="Video">
-                <div className="Video-div"></div>
-                <div className="Video-client">
-                    <ClientInfo data={this.state.data}></ClientInfo>
+                <Header title="视频面签" history={this.props.history} />
+                <div className="Video-wrap">
+                    <div className="video-left-wrap">
+                        <div className="coustom-video"></div>
+                    </div>
+                    <div className="video-right-wrap">
+                        <div className="video-right-video-wrap">
+                            <div className="customer-service"></div>
+                        </div>
+                        <div className="client-info">
+                            <h2>基本信息</h2>
+                            <p>姓名: {this.state.data.basqxm}</p>
+                            <p>手机号: {this.state.data.basjhm}</p>
+                            <p>证件号码: {this.state.data.bazjhm}</p>
+                        </div>
+                    </div>
                 </div>
-                <Submit videoStreamingTitle={this.state.videoStreaming ? '仅录制音频' : '恢复录制视频'} videoStreaming={(e) => { this.videoStreaming(e) }} consent={(e) => { this.VideoFacebookServlet('1') }} refuse={(e) => { this.VideoFacebookServlet('2') }}></Submit>
+                <div className="btn-wrap">
+                    <Button type="primary" onClick={(e) => { this.VideoFacebookServlet('1') }}>同意</Button>
+                    <div></div>
+                    <Button type="link" onClick={(e) => { this.VideoFacebookServlet('2') }}>拒绝</Button>
+                </div>
+                <Footer />
             </div>
         );
     }

@@ -1,0 +1,37 @@
+.home{
+	width: 100%;
+	height: 100%;
+	background: url(../assets/theme.jpg) no-repeat left top;
+	background-size: 100% 100%;
+}
+.home-content{
+	width: 1052px;
+	margin: 0 auto;
+	margin-top: 20px;
+}
+.home-center{
+	width: 100%;
+	position: relative;
+}
+.menu-list{
+	position: absolute;
+	left: -150px;
+	top: 0;
+	width: 120px;
+	padding-top: 30px;
+}
+.menu-list button{
+	width: 100%;
+	margin-bottom: 30px;
+	text-align: center;
+}
+.table-wrap{
+	width: 1052px;
+	height: 600px;
+	margin: 0 auto;
+	background: #f0f2f5;
+	border-right: 21px solid #d6cfab;
+	border-left: 21px solid #d6cfab;
+	border-top: 17px solid #d6cfab;
+	border-bottom: 17px solid #d6cfab;
+}

@@ -1,53 +1,80 @@
 import React from 'react';
-import { Form, Icon, Input, Button} from 'antd';
+import { Form, Icon, Input, Button,message } from 'antd';
+import '../../config.js';
+import Cookies from 'js-cookie'
 import "antd/dist/antd.css"
-import styles from './index.less'
-class LoginForm extends React.Component{
+import './index.css'
+class LoginForm extends React.Component {
+    constructor(props) {
+        super(props);
+    }
     handleSubmit = e => {
         e.preventDefault();
-        this.props.form.validateFields((err, values) => {
+        var that = this;
+        that.props.form.validateFields((err, values) => {
             if (!err) {
                 var data = {
-                    clientId: "",
                     ...values
                 };
                 console.log(data);
+                fetch(`${global.constants.apiUrl}app/login`, {
+                    method: 'POST',
+                    body:JSON.stringify(data)
+                })
+                .then(res => res.json())
+                .then(res => {
+                    if(res.response_code === "000000"){
+                        console.log(res)
+                        Cookies.set('userName',values.userName);
+                        that.props.history.push({ pathname : '/Home'});
+                    }else{
+                        message.error(res.response_msg);
+                    }
+                })
             }
         });
     };
-
+    componentDidMount() {
+        
+        console.log(global.constants.apiUrl);
+    }
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
-            <Form onSubmit={this.handleSubmit}>
-                <Form.Item>
-                    {getFieldDecorator('username', {
-                        rules: [{ required: true, message: 'Please input your username!' }],
-                    })(
-                        <Input
-                            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                            placeholder="Username"
-                        />,
-                    )}
-                </Form.Item>
-                <Form.Item>
-                    {getFieldDecorator('password', {
-                        rules: [{ required: true, message: 'Please input your Password!' }],
-                    })(
-                        <Input
-                            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                            type="password"
-                            placeholder="Password"
-                        />,
-                    )}
-                </Form.Item>
-                
-                 <Form.Item>
-                    <Button size="large" type="primary" htmlType="submit">
-                        登录
-                    </Button>
-                </Form.Item>
-            </Form >
+            <div className="form-tpl">
+                <div className="title">
+                    众睿资服
+                </div>
+                <Form onSubmit={(e) => { this.handleSubmit(e) }}>
+                    <Form.Item>
+                        {getFieldDecorator('userName', {
+                            rules: [{ required: true, message: '请输入用户名!' }],
+                        })(
+                            <Input
+                                prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                                placeholder="用户名"
+                            />,
+                        )}
+                    </Form.Item>
+                    <Form.Item>
+                        {getFieldDecorator('pwd', {
+                            rules: [{ required: true, message: '请输入密码!' }],
+                        })(
+                            <Input
+                                prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                                type="password"
+                                placeholder="密码"
+                            />,
+                        )}
+                    </Form.Item>
+
+                    <Form.Item>
+                        <Button size="large" type="primary" htmlType="submit" className="submit">
+                            登录
+                        </Button>
+                    </Form.Item>
+                </Form >
+            </div>
         );
     }
 }
