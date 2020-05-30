@@ -44,3 +44,16 @@
 .ant-pagination-item-active{
     border-color: #d3ba62;
 }
+.ant-spin-dot-item{
+    background-color:#d3ba62;
+}
+/* .ant-input:focus{
+    border-color: #d3ba62;
+    box-shadow: 0 0 0 2px rgb(211, 186, 98,0.2)
+}
+.ant-input:hover{
+    border-color: #d3ba62;
+}
+.ant-calendar-picker:hover .ant-calendar-picker-input:not(.ant-input-disabled){
+    border-color: #d3ba62;
+} */

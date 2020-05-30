@@ -11,18 +11,19 @@ class LoginForm extends React.Component {
     handleSubmit = e => {
         e.preventDefault();
         var that = this;
+        that.props.showLoading(true);
         that.props.form.validateFields((err, values) => {
             if (!err) {
                 var data = {
                     ...values
                 };
-                console.log(data);
                 fetch(`${global.constants.apiUrl}app/login`, {
                     method: 'POST',
                     body:JSON.stringify(data)
                 })
                 .then(res => res.json())
                 .then(res => {
+                    that.props.showLoading(false);
                     if(res.response_code === "000000"){
                         console.log(res)
                         Cookies.set('userName',values.userName);
@@ -34,10 +35,6 @@ class LoginForm extends React.Component {
             }
         });
     };
-    componentDidMount() {
-        
-        console.log(global.constants.apiUrl);
-    }
     render() {
         const { getFieldDecorator } = this.props.form;
         return (

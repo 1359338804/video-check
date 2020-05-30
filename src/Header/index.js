@@ -5,7 +5,9 @@ import Cookies from 'js-cookie'
 class Header extends React.Component{
     constructor(props){
         super(props)
-		
+		this.state = {
+			userName:Cookies.get('userName'),
+		}
     }
     componentDidMount(){
         document.title = "众睿资服";
@@ -32,14 +34,12 @@ class Header extends React.Component{
 						<div className="header-logo"></div>
 						<div className="header-text">{this.props.title}</div>
 					</div>
-					{/* <div className="person">
-						<i></i>
-						<Dropdown overlay={menu}>
-							<a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-							admin
-							</a>
-						</Dropdown>
-					</div> */}
+					{
+						this.props.userFlag && <div className="person">
+							欢迎进入，{this.state.userName}
+						</div>
+					}
+					
 				</div>
             </div>
         );

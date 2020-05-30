@@ -2,7 +2,7 @@
 import React from 'react';
 import './index.css';
 import '../config.js';
-import { Button } from 'antd';
+import { Button} from 'antd';
 import Cookies from 'js-cookie'
 import Header from '../Header/index.js';
 import Footer from '../Footer/index';
@@ -241,7 +241,7 @@ class Video extends React.Component {
     }
     // 重复登录被T
     _onKickout = () => {
-        alert("on kick out!");
+        alert("请勿重复连接！");
     }
     // 服务器超时
     _onRelayTimeout = (msg) => {
@@ -283,7 +283,6 @@ class Video extends React.Component {
                 .then((res)=>{
                     console.log('res: ', res);
                     if(res.code === "000000"){
-                        // window.opener=null;window.open('','_self');window.close();
                         that.props.history.goBack()
                     }else{
                         message.error(res.message);
@@ -303,10 +302,24 @@ class Video extends React.Component {
              document.title = `【　视频面签中　】${opts.userId} 正在为申请编号【${opts.roomid}】的客户进行视频面签。如意外关闭当前页面，可再【视频面签表】中找到对应申请编号，进行重连`;
         }
     }
+    // 强制退出
+    ForcedQuit(){
+        var that = this;
+        confirm({
+            title: '强制退出',
+            content: `点击确定后,会关闭当前页面,结束本次通话`,
+            okText:'确定',
+            cancelText:'取消',
+            onOk() {
+                return that.props.history.goBack();
+            },
+            onCancel() { },
+        });
+    }
     render() {
         return (
             <div className="Video">
-                <Header title="视频面签" history={this.props.history} />
+                <Header title="视频面签" history={this.props.history} userFlag={true}/>
                 <div className="Video-wrap">
                     <div className="video-left-wrap">
                         <div className="coustom-video"></div>
@@ -326,7 +339,9 @@ class Video extends React.Component {
                 <div className="btn-wrap">
                     <Button type="primary" onClick={(e) => { this.VideoFacebookServlet('1') }}>同意</Button>
                     <div></div>
-                    <Button type="link" onClick={(e) => { this.VideoFacebookServlet('2') }}>拒绝</Button>
+                    <Button type="danger" onClick={(e) => { this.VideoFacebookServlet('2') }}>拒绝</Button>
+                    <div></div>
+                    <Button type="danger" onClick={(e) => { this.ForcedQuit() }}>强制退出</Button>
                 </div>
                 <Footer />
             </div>

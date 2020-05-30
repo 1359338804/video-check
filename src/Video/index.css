@@ -76,3 +76,23 @@
 .btn-wrap div{
     width: 30px;
 }
+.btn-wrap .ant-btn-primary{
+    background-color: #1890ff;
+    border-color: #1890ff;
+    color: #ffffff;
+}
+.btn-wrap .ant-btn-primary:hover {
+    color: #fff;
+    background-color: #1890ff;
+    border-color: #1890ff;
+}
+.btn-wrap .ant-btn-primary:focus {
+    color: #fff;
+    background-color: #1890ff;
+    border-color: #1890ff;
+}
+.btn-wrap .ant-btn-link{
+    background-color: #ff7875;
+    border-color: #ff7875;
+    color: #ffffff;
+}

@@ -21,7 +21,7 @@
 	padding-top: 30px;
 }
 .menu-list button{
-	width: 100%;
+	width: 120px;
 	margin-bottom: 30px;
 	text-align: center;
 }
@@ -34,4 +34,23 @@
 	border-left: 21px solid #d6cfab;
 	border-top: 17px solid #d6cfab;
 	border-bottom: 17px solid #d6cfab;
+}
+@media screen and (max-width: 1400px) {
+	.menu-list{
+		position: relative;
+		left: 0;
+		right: 0;
+		top: 0;
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: center; 
+		margin-bottom: 10px;
+		padding: 0;
+	}
+	.menu-list button{
+		width: 120px;
+		text-align: center;
+		margin: 0 10px;
+	}       
 }

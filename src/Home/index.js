@@ -24,6 +24,7 @@ class Home extends React.Component{
 	}
 	renderTemp(){
 		const templateIndex = this.state.templateIndex;
+		const form = this.props.form;
 		if(templateIndex === 0){
 			return <VideoList />;
 		}else if(templateIndex === 1){
@@ -35,7 +36,7 @@ class Home extends React.Component{
 		let title = this.state.templateIndex === 0?"视频待面签":"视频审核历史";
         return(
             <div className="home">
-				<Header title={title} history={this.props.history} />
+				<Header title={title} history={this.props.history} userFlag={true}/>
 				<div className="home-content">
 					<div className="home-center">
 						<div className="menu-list">

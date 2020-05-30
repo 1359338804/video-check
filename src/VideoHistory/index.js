@@ -1,21 +1,29 @@
 import React from 'react';
-import { Table, message} from 'antd';
-import { Link } from 'react-router-dom';
+import { Table, message, Modal} from 'antd';
+import { Player } from 'video-react';
+import "video-react/dist/video-react.css";
 import Cookies from 'js-cookie'
+import SearchForm from './component/search'
 import '../config.js';
 import './index.css'
+
 class VideoHistory extends React.Component{
     constructor(props){
         super(props);
         this.state = {
+          customer:"",
+          startTime:"",
+          endTime:"",
           userName:Cookies.get('userName'),
           data: [],
           tableData: [],
           pagination: {
             current: 1,
-            pageSize: 8,
+            pageSize: 10,
           },
           loading: false,
+          visible: false,
+          videourl:"",
           // 申请编号，客户姓名，证件号码，视频发起人员，视频审核人员，状态（等待接入，审核完成），视频发起时间，备注。
           columns: [
             {
@@ -25,11 +33,11 @@ class VideoHistory extends React.Component{
             },{
               title: '客户姓名',
               dataIndex: 'sPFQRY',
-              key: 'sPFQRY',
+              key: 'khxm',
             },{
               title: '证件号码',
               dataIndex: 'sPFQRY',
-              key: 'sPFQRY',
+              key: 'zjhm',
             },{
               title: '视频发起人',
               dataIndex: 'sPFQRY',
@@ -40,18 +48,22 @@ class VideoHistory extends React.Component{
               key: 'sPSHRY',
             },{
               title: '状态',
-              dataIndex: '',
-              key: 'sPSHRY',
+              dataIndex: 'sPMQZT',
+              key: 'sPMQZT',
+              render:(text, row, index) => {
+                return this.videoListStatus(text);
+              }
             },{
               title: '视频发起时间',
-              dataIndex: '',
-              key: 'sPSHRY',
+              dataIndex: 'sPFQSJ',
+              key: 'sPFQSJ',
+              width:180,
             },{
-              title: '操作',
+              title: '查看视频',
               key: 'action',
+              width:100,
               render: (text, row, index) => {
-                var path = "/Video?userid="+ this.compileStr(this.state.data[index].uSERID)+"&usersig="+this.compileStr(this.state.data[index].uSERSIN)+"&roomid="+this.compileStr(this.state.data[index].sPFJID);
-                return (<Link className="theme-color" to={path} >视频面签</Link>);
+                return (<a className="theme-color" onClick={(e) => this.showVideoPlay(text)}>查看</a>);
               }
             },
           ]
@@ -62,8 +74,29 @@ class VideoHistory extends React.Component{
         this.props.history.push('/Login');
       }
       document.title = "众睿资服";
-      const { pagination } = this.state;
-      this.getList({ pagination });
+      this.getList();
+    }
+    showVideoPlay(params){
+      console.log(params)
+      this.setState({
+        videourl: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4",
+        visible:true,
+      })
+    }
+    videoListStatus(code){
+      switch(parseInt(code)){
+        case 1:
+          return "等待接入";
+          break;
+        case 2:
+          return "审核中";
+          break;
+        case 3:
+          return "审核完成";
+          break;
+        default:
+          return ""
+      }
     }
     compileStr (code) {
       var c = String.fromCharCode(code.charCodeAt(0) + code.length)
@@ -72,35 +105,36 @@ class VideoHistory extends React.Component{
       }
       return escape(c)
     };
-    // 分页
+    // 分页点击
     handleTableChange = (pagination, filters, sorter) => {
+      console.log(pagination)
       this.getSinglePageData(pagination);
     };
     // 获取全部数据
-    getList = (params) => {
-      console.log(params);
+    getList = () => {
       let that = this;
       this.setState({ loading: true });
       fetch(`${global.constants.apiUrl}app/video/getList`, {
         method: 'post',
         body:JSON.stringify({
-          "userName":that.state.userName
+          "type":"3",
+          "userName":that.state.userName,
+          "customer":that.state.customer,
+          "startTime":that.state.startTime,
+          "endTime":that.state.endTime,
         })
       })
       .then(res => res.json())
       .then(res => {
         this.setState({ loading: false });
         if(res.response_code === "000000"){
-          var obj = {
-            total:res.result.length
-          }
+
+          let data = Object.assign({}, this.state.pagination, { total: res.result.length })
           that.setState({
             data:res.result?res.result:[],
-            pagination:{
-              ...obj
-            }
+            pagination:data
           });  
-          this.getSinglePageData(params.pagination);
+          this.getSinglePageData(that.state.pagination);
         }else{
           message.error(res.response_msg);
         }
@@ -110,26 +144,63 @@ class VideoHistory extends React.Component{
     };
     // 获取分页单页数据
     getSinglePageData = (params) =>{
+      console.log(params)
       let startIndex = (params.current-1)*params.pageSize;
       let endIndex = startIndex + params.pageSize;
       this.setState({
         tableData:this.state.data.slice(startIndex, endIndex)
       });
     };
+    // 列表查询
+    query(params){
+      console.log(params);
+      let data = Object.assign({}, this.state.pagination, { current: 1 })
+  　　this.setState({
+        pagination: data,
+        customer:params.customer,
+        startTime:params.startTime,
+        endTime:params.endTime
+  　　},()=> this.getList());
+    }
+    handleCancel(){
+      this.setState({
+        videourl: "",
+        visible:false,
+      })
+    }
     render(){
       const { pagination, loading, columns, tableData} = this.state;
       return(
         <div className="video-table animated fadeInRight">
+          <SearchForm parent={ this }></SearchForm>
           <Table
         	bordered
         	columns={columns}
         	dataSource={tableData}
         	pagination={pagination}
         	loading={loading}
-          rowKey={record => record.iD}
-          scroll={{ y: 400 }}
+          rowKey={record => record.bASQBH}
+          scroll={{ y: 330 }}
         	onChange={this.handleTableChange}
           />
+          <Modal
+          title="查看视频"
+          visible={this.state.visible}
+          footer={null}
+          onCancel={(e) => this.handleCancel()}
+          width="900px"
+          height="600px"
+          maskClosable={false}
+        >
+          <Player
+            width="100%"
+            height="100%"
+            playsInline
+            // poster="./../assets/logo.png"
+            src={this.state.videourl}
+            
+          />
+        </Modal>
         </div>
       )
     }

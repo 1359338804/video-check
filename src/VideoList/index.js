@@ -13,7 +13,7 @@ class VideoList extends React.Component{
           tableData: [],
           pagination: {
             current: 1,
-            pageSize: 8,
+            pageSize: 10,
           },
           loading: false,
           columns: [
@@ -31,8 +31,8 @@ class VideoList extends React.Component{
               key: 'sPSHRY',
             },{
               title: '视频发起时间',
-              dataIndex: '',
-              key: 'time',
+              dataIndex: 'sPFQSJ',
+              key: 'sPFQSJ',
             },{
               title: '操作',
               key: 'action',
@@ -71,6 +71,7 @@ class VideoList extends React.Component{
       fetch(`${global.constants.apiUrl}app/video/getList`, {
         method: 'post',
         body:JSON.stringify({
+          "type":"1",
           "userName":that.state.userName
         })
       })
@@ -116,7 +117,7 @@ class VideoList extends React.Component{
         	dataSource={tableData}
         	pagination={pagination}
         	loading={loading}
-          rowKey={record => record.iD}
+          rowKey={record => record.bASQBH}
           scroll={{ y: 400 }}
         	onChange={this.handleTableChange}
           />
