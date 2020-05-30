@@ -43,7 +43,7 @@ class VideoHistory extends React.Component{
               dataIndex: 'sPFQRY',
               key: 'sPFQRY',
             },{
-              title: '视频审核人员',
+              title: '视频审核人',
               dataIndex: 'sPSHRY',
               key: 'sPSHRY',
             },{
@@ -60,7 +60,7 @@ class VideoHistory extends React.Component{
               width:180,
             },{
               title: '查看视频',
-              key: 'action',
+              key: 'vIDEOURL',
               width:100,
               render: (text, row, index) => {
                 return (<a className="theme-color" onClick={(e) => this.showVideoPlay(text)}>查看</a>);
@@ -78,10 +78,14 @@ class VideoHistory extends React.Component{
     }
     showVideoPlay(params){
       console.log(params)
-      this.setState({
-        videourl: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4",
-        visible:true,
-      })
+      if(params.vIDEOURL){
+        this.setState({
+          videourl: params.vIDEOURL,//"https://media.w3.org/2010/05/sintel/trailer_hd.mp4",
+          visible:true,
+        })
+      }else{
+        message.error("无视频链接");
+      }
     }
     videoListStatus(code){
       switch(parseInt(code)){
@@ -108,6 +112,9 @@ class VideoHistory extends React.Component{
     // 分页点击
     handleTableChange = (pagination, filters, sorter) => {
       console.log(pagination)
+      this.setState({
+        pagination:pagination
+      });
       this.getSinglePageData(pagination);
     };
     // 获取全部数据
@@ -179,7 +186,7 @@ class VideoHistory extends React.Component{
         	dataSource={tableData}
         	pagination={pagination}
         	loading={loading}
-          rowKey={record => record.bASQBH}
+          rowKey={record => record.bASQBH+Math.random()}
           scroll={{ y: 330 }}
         	onChange={this.handleTableChange}
           />
@@ -195,10 +202,10 @@ class VideoHistory extends React.Component{
           <Player
             width="100%"
             height="100%"
-            playsInline
+            preload="none"
             // poster="./../assets/logo.png"
             src={this.state.videourl}
-            
+            autoPlay={true}
           />
         </Modal>
         </div>

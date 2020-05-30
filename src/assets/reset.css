@@ -32,13 +32,23 @@
 .ant-pagination-item-active a:active {
     color: #d3ba62;
 }
-.ant-pagination-item:focus, .ant-pagination-item:hover{
+.ant-pagination-item:focus{
     color: #d3ba62;
 }
-.ant-pagination-item-active:focus a, .ant-pagination-item-active:hover a{
+.ant-pagination-item:hover{
+    color: #d3ba62;
+    border-color:#d3ba62;
+}
+.ant-pagination-item-active:focus a{
     color: #d3ba62;
 }
-.ant-pagination-item-active:focus, .ant-pagination-item-active:hover{
+.ant-pagination-item-active:hover a{
+    color: #d3ba62;
+}
+.ant-pagination-item-active:focus{
+    color: #d3ba62;
+}
+.ant-pagination-item-active:hover{
     color: #d3ba62;
 }
 .ant-pagination-item-active{
@@ -46,6 +56,9 @@
 }
 .ant-spin-dot-item{
     background-color:#d3ba62;
+}
+.ant-pagination-item a:hover{
+    color: #d3ba62;
 }
 /* .ant-input:focus{
     border-color: #d3ba62;

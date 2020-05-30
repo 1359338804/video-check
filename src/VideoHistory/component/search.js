@@ -12,13 +12,12 @@ class SearchForm extends React.Component {
         e.preventDefault();
         var that = this;
         that.props.form.validateFields((err, values) => {
-            console.log(values.time[0].format('YYYY-MM-DD'));
             let params = {
-                username:values.username,
+                customer:values.customer?values.customer:"",
             }
-            if(values.time){
-                let startTime = values.time[0].format('YYYY-MM-DD');
-                let endTime = values.time[1].format('YYYY-MM-DD');
+            if(values.time !="" && values.time){
+                params.startTime = values.time[0].format('YYYY-MM-DD');
+                params.endTime = values.time[1].format('YYYY-MM-DD');
             }
             that.props.parent.query(params);
         })
@@ -30,13 +29,13 @@ class SearchForm extends React.Component {
                 <Row>
                 <Col span={4}>
                     <Form.Item name="username">
-                    {getFieldDecorator('username')(
+                    {getFieldDecorator('customer')(
                         <Input autoComplete='off' placeholder="请输入客户姓名" />
                     )}
                     </Form.Item>
                 </Col>
                 <Col span={6}>
-                <Form.Item name="username1">
+                <Form.Item name="startEndTime">
                     <ConfigProvider locale={zh_CN}>
                         {
                             getFieldDecorator('time')(

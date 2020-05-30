@@ -34,6 +34,10 @@
 	border-left: 1px solid #a8a9aa;
 	font-family: Avenir,helvetica neue,Arial,Helvetica,sans-serif;
 }
+.header-right{
+	display: flex;
+	align-items: center;
+}
 .person{
 	height: 100%;
 	display: flex;
@@ -43,10 +47,36 @@
 	width: 20px;
 	height: 20px;
 	display: block;
-	background: url(../assets/logo.png) no-repeat left top;
+	background: url(../assets/logo-s.png) no-repeat left top;
 	background-size: 100% 100%;
-	margin-right: 15px;
+	margin-right: 8px;
 }
 .person a{
 	color: #000;
+}
+.theme-control{
+	margin-right: 80px;
+	width: 100px;
+	display: flex;
+	justify-content: space-between;
+}
+.theme-control span{
+	cursor: pointer;
+	width: 30px;
+	height: 30px;
+	border-radius: 100%;
+}
+.theme-control span:nth-child(1){
+	background: rgb(255, 150, 107);
+}
+.theme-control span:nth-child(2){
+	background: #d3ba62;
+}
+.person .quit{
+	width: 20px;
+	height: 20px;
+	margin-left: 15px;
+	background: url(../assets/quit.png) no-repeat left top;
+	background-size: 100% 100%;
+	cursor: pointer;
 }

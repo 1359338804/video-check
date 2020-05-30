@@ -6,6 +6,7 @@ import { Button} from 'antd';
 import Cookies from 'js-cookie'
 import Header from '../Header/index.js';
 import Footer from '../Footer/index';
+import RemarkForm from './component/remark'
 import Modal from 'antd/es/modal'; // 加载 JS
 import 'antd/es/modal/style/css'; // 加载 CSS
 
@@ -65,7 +66,11 @@ class Video extends React.Component {
             RTC: null,
             videoStreaming: true,
             data:{},
-            changeT:null
+            changeT:null,
+            remark:"",
+
+            userName:"",
+            basqbh:"",
         };
     }
     // 生命周期挂载
@@ -79,7 +84,9 @@ class Video extends React.Component {
         opts.roomid = uncompileStr(that.getQueryString('roomid'));
         console.log(opts.userId,opts.userSig,opts.roomid);
         that.setState({
-            changeT:setInterval(this.changTitl,1000)
+            changeT:setInterval(this.changTitl,1000),
+            userName:Cookies.get('userName'),
+            basqbh:opts.roomid,
         });
         this.WebRTC()
         // 获取用户信息
@@ -103,6 +110,22 @@ class Video extends React.Component {
     };
     // 生命周期卸载
     componentWillUnmount() {
+        // this.RTC.closeVideo;
+        var that = this;
+        var data = JSON.stringify({
+            "basqbh":this.state.basqbh,
+            "userName":Cookies.get('userName')
+        });
+        fetch(`${global.constants.apiUrl}app/VideoFacebookEnd`, {
+            method: 'POST',
+            body:data
+        })
+        .then(res => res.json())
+        .then(res => {
+            if(res.response_code === "000000"){}else{
+                message.error(res.response_msg);
+            }
+        })
         clearInterval(this.state.changeT);
     }
     // 腾讯云视频初始化
@@ -170,6 +193,7 @@ class Video extends React.Component {
                         // alert( info.errorMsg )
                     }
                 });
+                
             }
         })
     }
@@ -179,6 +203,7 @@ class Video extends React.Component {
         // console.debug(info)
         if (info.stream && info.stream.active === true) {
             var id = info.videoId;
+            this.sendStreamId(id);
             var video = document.getElementById(id);
             if (!video) {
                 video = createVideoElement(id);
@@ -191,7 +216,7 @@ class Video extends React.Component {
                     if (div) {
                         div.parentNode.children[1].style.width = data.volume * 100 + "%"
                     } else {
-                        RemoteSoundMeter.stop();
+                        // RemoteSoundMeter.stop();
                     }
                 }
             })
@@ -199,6 +224,45 @@ class Video extends React.Component {
         } else {
             // console.log('欢迎用户' + info.userId + '加入房间');
         }
+    }
+    sendStreamId(streamId){
+        var that = this;
+        var data = JSON.stringify({
+            "streamId":streamId,
+            "userName":this.state.userName,
+            "basqbh":this.state.basqbh
+        });
+        console.log(data);
+        fetch(`${global.constants.apiUrl}app/video/joinRoom`, {
+            method: 'POST',
+            body:data
+        })
+        .then(res => res.json())
+        .then(res => {
+            if(res.response_code === "000000"){}else{
+                message.error(res.response_msg);
+            }
+        })
+    }
+    // 挂断
+    hangUp(){
+        var that = this;
+        var data = JSON.stringify({
+            "basqbh":this.state.basqbh,
+            "userName":Cookies.get('userName')
+        });
+        fetch(`${global.constants.apiUrl}app/VideoFacebookEnd`, {
+            method: 'POST',
+            body:data
+        })
+        .then(res => res.json())
+        .then(res => {
+            if(res.response_code === "000000"){
+                that.props.history.goBack();
+            }else{
+                message.error(res.response_msg);
+            }
+        })
     }
     // 本地流新增
     _onLocalStreamAdd = (info) => {
@@ -217,7 +281,7 @@ class Video extends React.Component {
                     if (div) {
                         div.parentNode.children[1].style.width = data.volume * 100 + "%"
                     } else {
-                        LocalSoundMeter.stop();
+                        // LocalSoundMeter.stop();
                     }
                 }
             })
@@ -245,7 +309,7 @@ class Video extends React.Component {
     }
     // 服务器超时
     _onRelayTimeout = (msg) => {
-        alert("onRelayTimeout!" + (msg ? JSON.stringify(msg) : ""));
+        // alert("onRelayTimeout!" + (msg ? JSON.stringify(msg) : ""));
 
     }
     //不采集视频&打开视频采集
@@ -272,18 +336,18 @@ class Video extends React.Component {
             cancelText:'取消',
             onOk() {
                 return new Promise((resolve, reject) => {
-                    fetch(`${global.constants.apiUrl}VideoFacebookServlet?basqbh=${opts.roomid}&mqshzt=${mqshzt}&cxlx=facebookResult`, {
+                    fetch(`${global.constants.apiUrl}VideoFacebookServlet?basqbh=${opts.roomid}&mqshzt=${mqshzt}&cxlx=facebookResult&spmqbz=${that.state.remark}`, {
                         method: 'POST',
                     })
-                        .then(res => res.json())
-                        .then(res => {
-                            resolve(res)
-                        })
+                    .then(res => res.json())
+                    .then(res => {
+                        resolve(res)
+                    })
                 }).catch(() => console.log('Oops errors!'))
                 .then((res)=>{
                     console.log('res: ', res);
                     if(res.code === "000000"){
-                        that.props.history.goBack()
+                        that.hangUp();
                     }else{
                         message.error(res.message);
                     }
@@ -311,12 +375,18 @@ class Video extends React.Component {
             okText:'确定',
             cancelText:'取消',
             onOk() {
-                return that.props.history.goBack();
+                return that.hangUp();
             },
             onCancel() { },
         });
     }
+    setRemark(event){
+        this.setState({
+            remark:event.target.value
+        });
+    }
     render() {
+        const form = this.props.form;
         return (
             <div className="Video">
                 <Header title="视频面签" history={this.props.history} userFlag={true}/>
@@ -333,6 +403,7 @@ class Video extends React.Component {
                             <p>姓名: {this.state.data.basqxm}</p>
                             <p>手机号: {this.state.data.basjhm}</p>
                             <p>证件号码: {this.state.data.bazjhm}</p>
+                            <RemarkForm getRemark={this.setRemark.bind(this)}></RemarkForm>
                         </div>
                     </div>
                 </div>

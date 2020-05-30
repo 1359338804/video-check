@@ -1,60 +1,29 @@
 import React from 'react';
-import { Form, Input, Button, Row, Col, DatePicker, ConfigProvider } from 'antd';
-import zh_CN from 'antd/lib/locale-provider/zh_CN';
-import moment from 'moment';
-import 'moment/locale/zh-cn';
-const { RangePicker } = DatePicker;
-class SearchForm extends React.Component {
+import { Form, Input, Row, Col } from 'antd';
+class RemarkForm extends React.Component {
     constructor(props) {
         super(props);
     }
-    handleSubmit = e => {
-        e.preventDefault();
+    sendRemark(){
         var that = this;
-        that.props.form.validateFields((err, values) => {
-            let params = {
-                customer:values.customer?values.customer:"",
-            }
-            if(values.time !="" && values.time){
-                params.startTime = values.time[0].format('YYYY-MM-DD');
-                params.endTime = values.time[1].format('YYYY-MM-DD');
-            }
-            that.props.parent.query(params);
-        })
-    };
+        console.log(that.props.form.getFieldsValue().remark)
+        this.props.getRemark("123")
+    }
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
-            <Form onSubmit={(e) => { this.handleSubmit(e) }}>
+            <Form>
                 <Row>
-                <Col span={4}>
-                    <Form.Item name="username">
-                    {getFieldDecorator('customer')(
-                        <Input autoComplete='off' placeholder="请输入客户姓名" />
-                    )}
-                    </Form.Item>
-                </Col>
-                <Col span={6}>
-                <Form.Item name="startEndTime">
-                    <ConfigProvider locale={zh_CN}>
-                        {
-                            getFieldDecorator('time')(
-                                <RangePicker format="YYYY-MM-DD" autoComplete='off' placeholder="['开始', '结束']"/>
-                            )
-                        }
-                    </ConfigProvider>
-                    </Form.Item>
-                </Col>
-                <Col span={3}>
-                    <Form.Item>
-                    <Button type="primary" htmlType="submit">
-                        查询
-                    </Button>
-                    </Form.Item>
-                </Col>
+                    <Col span={24}>
+                        <Form.Item name="remark" label="备注: ">
+                        {getFieldDecorator('remark')(
+                            <Input.TextArea onChange={this.props.getRemark}/>
+                        )}
+                        </Form.Item>
+                    </Col>
                 </Row>
             </Form>
         );
     }
 }
-export default Form.create()(SearchForm);
+export default Form.create()(RemarkForm);
