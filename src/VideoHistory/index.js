@@ -84,7 +84,7 @@ class VideoHistory extends React.Component{
           visible:true,
         })
       }else{
-        message.error("无视频链接");
+        message.error("视频正在生成，请稍后...");
       }
     }
     videoListStatus(code){

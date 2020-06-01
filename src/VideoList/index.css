@@ -45,3 +45,6 @@
     -webkit-animation-name: fadeInRight;
     animation-name: fadeInRight
 }
+.refresh-wrap{
+    padding-bottom: 15px;
+}

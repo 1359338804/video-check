@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, message} from 'antd';
+import { Table, message,Form,Button} from 'antd';
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie'
 import '../config.js';
@@ -52,6 +52,11 @@ class VideoList extends React.Component{
       const { pagination } = this.state;
       this.getList({ pagination });
     }
+    componentWillReceiveProps(nextProps){
+      if(nextProps.isRefresh){
+        this.refresh();
+      }
+    }
     compileStr (code) {
       var c = String.fromCharCode(code.charCodeAt(0) + code.length)
       for (var i =1; i < code.length; i++) {
@@ -79,16 +84,12 @@ class VideoList extends React.Component{
       .then(res => {
         this.setState({ loading: false });
         if(res.response_code === "000000"){
-          var obj = {
-            total:res.result.length
-          }
+          let data = Object.assign({}, this.state.pagination, { total: res.result.length })
           that.setState({
             data:res.result?res.result:[],
-            pagination:{
-              ...obj
-            }
+            pagination:data
           });  
-          this.getSinglePageData(params.pagination);
+          this.getSinglePageData(that.state.pagination);
         }else{
           message.error(res.response_msg);
         }
@@ -96,6 +97,11 @@ class VideoList extends React.Component{
         this.setState({ loading: false });
       })
     };
+    // 刷新
+    refresh(){
+      const { pagination } = this.state;
+      this.getList({ pagination });
+    }
     // 获取分页单页数据
     getSinglePageData = (params) =>{
       console.log(params);
@@ -111,6 +117,9 @@ class VideoList extends React.Component{
       const { data, pagination, loading, columns, tableData} = this.state;
       return(
         <div className="video-table animated fadeInRight">
+          <div className="refresh-wrap">
+           <Button type="primary" onClick={(e)=>this.refresh()}>刷新</Button>
+          </div>
           <Table
         	bordered
         	columns={columns}
@@ -118,7 +127,7 @@ class VideoList extends React.Component{
         	pagination={pagination}
         	loading={loading}
           rowKey={record => record.bASQBH}
-          scroll={{ y: 400 }}
+          scroll={{ y: 360 }}
         	onChange={this.handleTableChange}
           />
         </div>

@@ -35,16 +35,6 @@ function createVideoElement(id, isLocal) {
     }
     return document.getElementById(id);
 }
- //是用来获取url中的参数的值的 根据参数名获取参数值
-function getQueryString(name) {
-    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
-    var r = window.location.href.substr(1).match(reg);
-    console.log(r)
-    if (r != null) {
-        return unescape(r[2]);
-    }
-    return null;
-};
 //字符串进行解密 
 function uncompileStr(code){
     if(!code){
