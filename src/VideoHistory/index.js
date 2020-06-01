@@ -35,8 +35,8 @@ class VideoHistory extends React.Component{
               dataIndex: 'sPFQRY',
               key: 'khxm',
             },{
-              title: '证件号码',
-              dataIndex: 'sPFQRY',
+              title: '身份证号',
+              dataIndex: '',
               key: 'zjhm',
             },{
               title: '视频发起人',

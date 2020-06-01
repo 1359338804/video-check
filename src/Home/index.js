@@ -79,7 +79,8 @@ class Home extends React.Component{
 			title: '视频待面签',
 			content: (
 			  <div>
-				<p>有新的视频待面签消息，点击确定将会进行视频面签</p>
+				<p>有新的视频待面签消息，视频发起人：{info.sPFQRY}</p>
+				<p>点击确定将会进行视频面签</p>
 			  </div>
 			),
 			okText:"确定",

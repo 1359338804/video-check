@@ -392,7 +392,7 @@ class Video extends React.Component {
                             <h2>基本信息</h2>
                             <p>姓名: {this.state.data.basqxm}</p>
                             <p>手机号: {this.state.data.basjhm}</p>
-                            <p>证件号码: {this.state.data.bazjhm}</p>
+                            <p>身份证号: {this.state.data.bazjhm}</p>
                             <RemarkForm getRemark={this.setRemark.bind(this)}></RemarkForm>
                         </div>
                     </div>
