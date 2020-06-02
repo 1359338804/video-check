@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, message,Form,Button} from 'antd';
+import { Table, message,Button} from 'antd';
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie'
 import '../config.js';
@@ -19,25 +19,25 @@ class VideoList extends React.Component{
           columns: [
             {
               title: '申请编号',
-              dataIndex: 'bASQBH',
-              key: 'bASQBH',
+              dataIndex: 'BASQBH',
+              key: 'BASQBH',
             },{
               title: '视频发起人',
-              dataIndex: 'sPFQRY',
-              key: 'sPFQRY',
+              dataIndex: 'SPFQRY',
+              key: 'SPFQRY',
             },{
               title: '视频审核人员',
-              dataIndex: 'sPSHRY',
-              key: 'sPSHRY',
+              dataIndex: 'SPSHRY',
+              key: 'SPSHRY',
             },{
               title: '视频发起时间',
-              dataIndex: 'sPFQSJ',
-              key: 'sPFQSJ',
+              dataIndex: 'SPFQSJ',
+              key: 'SPFQSJ',
             },{
               title: '操作',
               key: 'action',
               render: (text, row, index) => {
-                var path = "/Video?userid="+ this.compileStr(this.state.data[index].uSERID)+"&usersig="+this.compileStr(this.state.data[index].uSERSIN)+"&roomid="+this.compileStr(this.state.data[index].sPFJID);
+                var path = "/Video?USERID="+ this.compileStr(this.state.data[index].USERID)+"&usersig="+this.compileStr(this.state.data[index].USERSIN)+"&roomid="+this.compileStr(this.state.data[index].SPFJID);
                 return (<Link className="theme-color" to={path} >视频接入</Link>);
               }
             },
@@ -50,7 +50,7 @@ class VideoList extends React.Component{
       }
       document.title = "众睿资服";
       const { pagination } = this.state;
-      this.getList({ pagination });
+      this.getList(pagination);
     }
     componentWillReceiveProps(nextProps){
       if(nextProps.isRefresh){
@@ -66,30 +66,33 @@ class VideoList extends React.Component{
     };
     // 分页
     handleTableChange = (pagination, filters, sorter) => {
-      this.getSinglePageData(pagination);
+      let data = Object.assign({}, this.state.pagination, { current: pagination.current })
+      this.setState({
+        pagination:data
+      });  
+      this.getList(pagination);
     };
     // 获取全部数据
     getList = (params) => {
-      console.log(params);
       let that = this;
       this.setState({ loading: true });
       fetch(`${global.constants.apiUrl}app/video/getList`, {
         method: 'post',
         body:JSON.stringify({
           "type":"1",
-          "userName":that.state.userName
+          "userName":that.state.userName,
+          ...params
         })
       })
       .then(res => res.json())
       .then(res => {
         this.setState({ loading: false });
         if(res.response_code === "000000"){
-          let data = Object.assign({}, this.state.pagination, { total: res.result.length })
+          let data = Object.assign({}, this.state.pagination, { total: res.result.totalRows })
           that.setState({
-            data:res.result?res.result:[],
+            data:res.result.list?res.result.list:[],
             pagination:data
           });  
-          this.getSinglePageData(that.state.pagination);
         }else{
           message.error(res.response_msg);
         }
@@ -99,22 +102,16 @@ class VideoList extends React.Component{
     };
     // 刷新
     refresh(){
-      const { pagination } = this.state;
-      this.getList({ pagination });
-    }
-    // 获取分页单页数据
-    getSinglePageData = (params) =>{
-      console.log(params);
-      let startIndex = (params.current-1)*params.pageSize;
-      let endIndex = startIndex + params.pageSize;
-      console.log(startIndex, endIndex);
-      console.log(this.state.data.slice(startIndex, endIndex));
+      let data = Object.assign({}, this.state.pagination, { current: 1 });
       this.setState({
-        tableData:this.state.data.slice(startIndex, endIndex)
-      });
-    };
+        pagination:data
+      }, ()=>{
+        const { pagination } = this.state;
+        this.getList(pagination);
+      });  
+    }
     render(){
-      const { data, pagination, loading, columns, tableData} = this.state;
+      const { data, pagination, loading, columns} = this.state;
       return(
         <div className="video-table animated fadeInRight">
           <div className="refresh-wrap">
@@ -123,10 +120,10 @@ class VideoList extends React.Component{
           <Table
         	bordered
         	columns={columns}
-        	dataSource={tableData}
+        	dataSource={data}
         	pagination={pagination}
         	loading={loading}
-          rowKey={record => record.bASQBH}
+          rowKey={record => record.BASQBH}
           scroll={{ y: 360 }}
         	onChange={this.handleTableChange}
           />

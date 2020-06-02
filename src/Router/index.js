@@ -1,11 +1,10 @@
 import React from 'react';
 import { HashRouter, Route } from 'react-router-dom'
-import { createHashHistory } from "history";
 import Login from '../Login/index'
-import VideoList from '../VideoList/index'
 import Video from '../Video/index'
 import Home from '../Home/index'
-const history = createHashHistory();
+import { createHashHistory } from "history";
+const history = createHashHistory(); //eslint-disable-line
 class RouterConfig extends React.Component{
     render(){
         return(

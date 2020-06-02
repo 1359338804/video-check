@@ -25,7 +25,7 @@ class Home extends React.Component{
 		document.title = "众睿资服";
 		timer = setInterval(()=>{
 			this.intervalGetList();
-		}, 3000);
+		}, 5000);
 	}
 	componentWillUnmount(){
 		clearInterval(timer);
@@ -37,7 +37,7 @@ class Home extends React.Component{
 	}
 	renderTemp(){
 		const templateIndex = this.state.templateIndex;
-		const form = this.props.form;
+		const form = this.props.form; //eslint-disable-line
 		if(templateIndex === 0){
 			return <VideoList isRefresh={this.state.isRefresh}/>;
 		}else if(templateIndex === 1){
@@ -50,19 +50,21 @@ class Home extends React.Component{
 		fetch(`${global.constants.apiUrl}app/video/getList`, {
 			method: 'post',
 			body:JSON.stringify({
-			"type":"1",
-			"userName":that.state.userName
+				"type":"1",
+				"userName":that.state.userName,
+				"current": 1,
+				"pageSize": 10,
 			})
 		})
 		.then(res => res.json())
 		.then(res => {
-			if(res.response_code === "000000"){
-				if(res.result != ""){
+			if(res.response_code === "000000"){ //eslint-disable-line
+				if(res.result.list != ""){ //eslint-disable-line
 					clearInterval(timer);
 					that.setState({
 						isRefresh:true,
 					})
-					that.showTip(res.result[0]);
+					that.showTip(res.result.list[0]);
 				}else{
 					that.setState({
 						isRefresh:false,
@@ -74,12 +76,12 @@ class Home extends React.Component{
 	// 消息提示框
 	showTip(info){
 		var that = this;
-		var search = "?userid="+ that.compileStr(info.uSERID)+"&usersig="+that.compileStr(info.uSERSIN)+"&roomid="+that.compileStr(info.sPFJID);
+		var search = "?USERID="+ that.compileStr(info.USERID)+"&usersig="+that.compileStr(info.USERSIN)+"&roomid="+that.compileStr(info.SPFJID);
 		Modal.info({
 			title: '视频待面签',
 			content: (
 			  <div>
-				<p>有新的视频待面签消息，视频发起人：{info.sPFQRY}</p>
+				<p>有新的视频待面签消息，视频发起人：{info.SPFQRY}</p>
 				<p>点击确定将会进行视频面签</p>
 			  </div>
 			),
@@ -97,7 +99,7 @@ class Home extends React.Component{
 	    return escape(c)
 	};
     render(){
-        const form = this.props.form;
+        const form = this.props.form; //eslint-disable-line
 		let title = this.state.templateIndex === 0?"视频待面签":"视频审核历史";
         return(
             <div className="home">

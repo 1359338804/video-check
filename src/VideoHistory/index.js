@@ -23,47 +23,47 @@ class VideoHistory extends React.Component{
           },
           loading: false,
           visible: false,
-          videourl:"",
+          VIDEOURL:"",
           // 申请编号，客户姓名，证件号码，视频发起人员，视频审核人员，状态（等待接入，审核完成），视频发起时间，备注。
           columns: [
             {
               title: '申请编号',
-              dataIndex: 'bASQBH',
-              key: 'bASQBH',
+              dataIndex: 'BASQBH',
+              key: 'BASQBH',
             },{
               title: '客户姓名',
-              dataIndex: 'sPFQRY',
+              dataIndex: 'SPFQRY',
               key: 'khxm',
             },{
               title: '身份证号',
-              dataIndex: 'cardId',
-              key: 'cardId',
+              dataIndex: 'CARDID',
+              key: 'CARDID',
             },{
               title: '视频发起人',
-              dataIndex: 'sPFQRY',
-              key: 'sPFQRY',
+              dataIndex: 'SPFQRY',
+              key: 'SPFQRY',
             },{
               title: '视频审核人',
-              dataIndex: 'sPSHRY',
-              key: 'sPSHRY',
+              dataIndex: 'SPSHRY',
+              key: 'SPSHRY',
             },{
               title: '状态',
-              dataIndex: 'sPMQZT',
-              key: 'sPMQZT',
+              dataIndex: 'SPMQZT',
+              key: 'SPMQZT',
               render:(text, row, index) => {
                 return this.videoListStatus(text);
               }
             },{
               title: '视频发起时间',
-              dataIndex: 'sPFQSJ',
-              key: 'sPFQSJ',
+              dataIndex: 'SPFQSJ',
+              key: 'SPFQSJ',
               width:180,
             },{
               title: '查看视频',
-              key: 'vIDEOURL',
+              key: 'VIDEOURL',
               width:100,
               render: (text, row, index) => {
-                return (<a className="theme-color" onClick={(e) => this.showVideoPlay(text)}>查看</a>);
+                return (<a className="theme-color" onClick={(e) => this.showVideoPlay(text)}>查看</a>); //eslint-disable-line
               }
             },
           ]
@@ -74,13 +74,14 @@ class VideoHistory extends React.Component{
         this.props.history.push('/Login');
       }
       document.title = "众睿资服";
-      this.getList();
+      const { pagination } = this.state;
+      this.getList(pagination);
     }
     showVideoPlay(params){
       console.log(params)
-      if(params.vIDEOURL){
+      if(params.VIDEOURL){
         this.setState({
-          videourl: params.vIDEOURL,//"https://media.w3.org/2010/05/sintel/trailer_hd.mp4",
+          VIDEOURL: params.VIDEOURL,//"https://media.w3.org/2010/05/sintel/trailer_hd.mp4",
           visible:true,
         })
       }else{
@@ -91,13 +92,13 @@ class VideoHistory extends React.Component{
       switch(parseInt(code)){
         case 1:
           return "等待接入";
-          break;
+          break; //eslint-disable-line
         case 2:
           return "审核中";
-          break;
+          break; //eslint-disable-line
         case 3:
           return "审核完成";
-          break;
+          break; //eslint-disable-line
         default:
           return ""
       }
@@ -111,14 +112,14 @@ class VideoHistory extends React.Component{
     };
     // 分页点击
     handleTableChange = (pagination, filters, sorter) => {
-      console.log(pagination)
+      let data = Object.assign({}, this.state.pagination, { current: pagination.current })
       this.setState({
-        pagination:pagination
-      });
-      this.getSinglePageData(pagination);
+        pagination:data
+      });  
+      this.getList(pagination);
     };
     // 获取全部数据
-    getList = () => {
+    getList = (params) => {
       let that = this;
       this.setState({ loading: true });
       fetch(`${global.constants.apiUrl}app/video/getList`, {
@@ -129,34 +130,24 @@ class VideoHistory extends React.Component{
           "customer":that.state.customer,
           "startTime":that.state.startTime,
           "endTime":that.state.endTime,
+          ...params
         })
       })
       .then(res => res.json())
       .then(res => {
         this.setState({ loading: false });
         if(res.response_code === "000000"){
-
-          let data = Object.assign({}, this.state.pagination, { total: res.result.length })
+          let data = Object.assign({}, this.state.pagination, { total: res.result.totalRows })
           that.setState({
-            data:res.result?res.result:[],
+            data:res.result.list?res.result.list:[],
             pagination:data
           });  
-          this.getSinglePageData(that.state.pagination);
         }else{
           message.error(res.response_msg);
         }
       }).catch(err => {
         this.setState({ loading: false });
       })
-    };
-    // 获取分页单页数据
-    getSinglePageData = (params) =>{
-      console.log(params)
-      let startIndex = (params.current-1)*params.pageSize;
-      let endIndex = startIndex + params.pageSize;
-      this.setState({
-        tableData:this.state.data.slice(startIndex, endIndex)
-      });
     };
     // 列表查询
     query(params){
@@ -167,26 +158,26 @@ class VideoHistory extends React.Component{
         customer:params.customer,
         startTime:params.startTime,
         endTime:params.endTime
-  　　},()=> this.getList());
+  　　},()=> this.getList(this.state.pagination));
     }
     handleCancel(){
       this.setState({
-        videourl: "",
+        VIDEOURL: "",
         visible:false,
       })
     }
     render(){
-      const { pagination, loading, columns, tableData} = this.state;
+      const {data, pagination, loading, columns} = this.state;
       return(
         <div className="video-table animated fadeInRight">
           <SearchForm parent={ this }></SearchForm>
           <Table
         	bordered
         	columns={columns}
-        	dataSource={tableData}
+        	dataSource={data}
         	pagination={pagination}
         	loading={loading}
-          rowKey={record => record.bASQBH+Math.random()}
+          rowKey={record => record.BASQBH+Math.random()}
           scroll={{ y: 330 }}
         	onChange={this.handleTableChange}
           />
@@ -204,7 +195,7 @@ class VideoHistory extends React.Component{
             height="100%"
             preload="none"
             // poster="./../assets/logo.png"
-            src={this.state.videourl}
+            src={this.state.VIDEOURL}
             autoPlay={true}
           />
         </Modal>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Input, Row, Col } from 'antd';
 class RemarkForm extends React.Component {
-    constructor(props) {
+    constructor(props) { //eslint-disable-line
         super(props);
     }
     sendRemark(){

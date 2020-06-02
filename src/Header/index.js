@@ -1,6 +1,5 @@
 import React from 'react';
 import './index.css'
-import { Menu, Dropdown } from 'antd';
 import Cookies from 'js-cookie'
 class Header extends React.Component{
     constructor(props){
@@ -30,16 +29,6 @@ class Header extends React.Component{
 		})
 	}
     render(){
-        const form = this.props.form;
-		const menu = (
-		  <Menu>
-		    <Menu.Item>
-		      <a target="_blank" onClick={e => this.quitLogin()}>
-		        退出登录
-		      </a>
-		    </Menu.Item>
-		  </Menu>
-		);
         return(
             <div className="header">
 				<div className="header-content">
@@ -56,7 +45,7 @@ class Header extends React.Component{
 						{
 							this.props.userFlag && <div className="person">
 							<i></i>
-							<a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+							<a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
 								欢迎进入，{this.state.userName}
 							</a>
 							<div className="quit" onClick={(e) => this.quitLogin()}></div>

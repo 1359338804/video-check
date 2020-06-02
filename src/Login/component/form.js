@@ -5,7 +5,7 @@ import Cookies from 'js-cookie'
 import "antd/dist/antd.css"
 import './index.css'
 class LoginForm extends React.Component {
-    constructor(props) {
+    constructor(props) { //eslint-disable-line
         super(props);
     }
     handleSubmit = e => {

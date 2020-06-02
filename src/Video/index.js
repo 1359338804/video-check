@@ -17,7 +17,7 @@ import 'antd/es/message/style/css'; // 加载 CSS
 const { confirm } = Modal;
 
 const opts = {
-    userId: '',
+    USERID: '',
     sdkAppId: 1400376311, //1400223297,
     userSig: '',
     roomid: '',
@@ -60,7 +60,7 @@ class Video extends React.Component {
             remark:"",
 
             userName:"",
-            basqbh:"",
+            BASQBH:"",
         };
     }
     // 生命周期挂载
@@ -69,14 +69,14 @@ class Video extends React.Component {
         if(!Cookies.get('userName')){
             this.props.history.push('/Login');
         }
-        opts.userId = uncompileStr(that.getQueryString('userid'));
+        opts.USERID = uncompileStr(that.getQueryString('USERID'));
         opts.userSig = uncompileStr(that.getQueryString('usersig'));
         opts.roomid = uncompileStr(that.getQueryString('roomid'));
-        console.log(opts.userId,opts.userSig,opts.roomid);
+        console.log(opts.USERID,opts.userSig,opts.roomid);
         that.setState({
             changeT:setInterval(this.changTitl,1000),
             userName:Cookies.get('userName'),
-            basqbh:opts.roomid,
+            BASQBH:opts.roomid,
         });
         this.WebRTC()
         // 获取用户信息
@@ -102,7 +102,7 @@ class Video extends React.Component {
     componentWillUnmount() {
         var that = this;
         var data = JSON.stringify({
-            "basqbh":this.state.basqbh,
+            "basqbh":this.state.BASQBH,
             "userName":Cookies.get('userName')
         });
         fetch(`${global.constants.apiUrl}app/VideoFacebookEnd`, {
@@ -124,11 +124,11 @@ class Video extends React.Component {
             if (!res.support) {
                 alert('你的浏览器不支持视频通话，请下载最新的谷歌浏览器')
             } else {
-                 console.log(opts.userId,opts.userSig,opts.roomid);
+                 console.log(opts.USERID,opts.userSig,opts.roomid);
 
                 // 初始化RTC
                 const RTC = new WebRTCAPI({
-                    "userId": opts.userId,
+                    "userId": opts.USERID,
                     "sdkAppId": opts.sdkAppId,
                     "userSig": opts.userSig,
                     // "debug":{
@@ -211,7 +211,7 @@ class Video extends React.Component {
             })
             video.srcObject = info.stream;
         } else {
-            // console.log('欢迎用户' + info.userId + '加入房间');
+            // console.log('欢迎用户' + info.USERID + '加入房间');
         }
     }
     sendStreamId(streamId){
@@ -219,7 +219,7 @@ class Video extends React.Component {
         var data = JSON.stringify({
             "streamId":streamId,
             "userName":this.state.userName,
-            "basqbh":this.state.basqbh
+            "basqbh":this.state.BASQBH
         });
         console.log(data);
         fetch(`${global.constants.apiUrl}app/video/joinRoom`, {
@@ -237,7 +237,7 @@ class Video extends React.Component {
     hangUp(){
         var that = this;
         var data = JSON.stringify({
-            "basqbh":this.state.basqbh,
+            "basqbh":this.state.BASQBH,
             "userName":Cookies.get('userName')
         });
         fetch(`${global.constants.apiUrl}app/VideoFacebookEnd`, {
@@ -350,10 +350,10 @@ class Video extends React.Component {
     //设置title
     changTitl(){
         this.focus();
-        if(document.title === `【　视频面签中　】${opts.userId} 正在为申请编号【${opts.roomid}】的客户进行视频面签。如意外关闭当前页面，可再【视频面签表】中找到对应申请编号，进行重连`){
-             document.title = `【　　　　　　　】${opts.userId} 正在为申请编号【${opts.roomid}】的客户进行视频面签。如意外关闭当前页面，可再【视频面签表】中找到对应申请编号，进行重连`;
+        if(document.title === `【　视频面签中　】${opts.USERID} 正在为申请编号【${opts.roomid}】的客户进行视频面签。如意外关闭当前页面，可再【视频面签表】中找到对应申请编号，进行重连`){
+             document.title = `【　　　　　　　】${opts.USERID} 正在为申请编号【${opts.roomid}】的客户进行视频面签。如意外关闭当前页面，可再【视频面签表】中找到对应申请编号，进行重连`;
         }else{
-             document.title = `【　视频面签中　】${opts.userId} 正在为申请编号【${opts.roomid}】的客户进行视频面签。如意外关闭当前页面，可再【视频面签表】中找到对应申请编号，进行重连`;
+             document.title = `【　视频面签中　】${opts.USERID} 正在为申请编号【${opts.roomid}】的客户进行视频面签。如意外关闭当前页面，可再【视频面签表】中找到对应申请编号，进行重连`;
         }
     }
     // 强制退出
