@@ -36,8 +36,8 @@ class VideoHistory extends React.Component{
               key: 'khxm',
             },{
               title: '身份证号',
-              dataIndex: '',
-              key: 'zjhm',
+              dataIndex: 'cardId',
+              key: 'cardId',
             },{
               title: '视频发起人',
               dataIndex: 'sPFQRY',

@@ -100,7 +100,6 @@ class Video extends React.Component {
     };
     // 生命周期卸载
     componentWillUnmount() {
-        // this.RTC.closeVideo;
         var that = this;
         var data = JSON.stringify({
             "basqbh":this.state.basqbh,
@@ -337,7 +336,8 @@ class Video extends React.Component {
                 .then((res)=>{
                     console.log('res: ', res);
                     if(res.code === "000000"){
-                        that.hangUp();
+                        // that.hangUp();
+                        that.props.history.goBack();
                     }else{
                         message.error(res.message);
                     }
@@ -365,7 +365,8 @@ class Video extends React.Component {
             okText:'确定',
             cancelText:'取消',
             onOk() {
-                return that.hangUp();
+                that.props.history.goBack();
+                // return that.hangUp();
             },
             onCancel() { },
         });
