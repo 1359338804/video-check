@@ -100,9 +100,8 @@ class VideoHistory extends React.Component{
       if(!url){
         message.error("视频正在生成，请稍后...");
       }else{
-        var downloadurl = url + "?download_name=" + BASQBH;
+        var downloadurl = url + "?download_name=" + BASQBH + ".mp4";
         window.location = downloadurl;
-        // window.open(downloadurl);
       }
     }
     videoListStatus(code){
