@@ -73,6 +73,8 @@ class Home extends React.Component{
 						isRefresh:false,
 					})
 				}
+			}else if(res.response_code === "666666"){
+				that.props.history.push('/Login');
 			}
 		})
 	}

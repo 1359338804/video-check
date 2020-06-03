@@ -47,6 +47,15 @@ class VideoHistory extends React.Component{
               dataIndex: 'SPSHRY',
               key: 'SPSHRY',
             },{
+              title: '视频发起时间',
+              dataIndex: 'SPFQSJ',
+              key: 'SPFQSJ',
+              width:180,
+            },{
+              title: '备注',
+              dataIndex: 'SPMQBZ',
+              key: 'SPMQBZ'
+            },{
               title: '状态',
               dataIndex: 'SPMQZT',
               key: 'SPMQZT',
@@ -54,19 +63,14 @@ class VideoHistory extends React.Component{
                 return this.videoListStatus(text);
               }
             },{
-              title: '视频发起时间',
-              dataIndex: 'SPFQSJ',
-              key: 'SPFQSJ',
-              width:180,
-            },{
               title: '查看视频',
               key: 'VIDEOURL',
               width:100,
               render: (text, row, index) => {
-                var downloadurl = text.VIDEOURL + "?download_name=mp4";
+                var downloadurl = text.VIDEOURL + "?download_name=" + text.BASQBH;
                 return(<div>
                   <a className="theme-color" onClick={(e) => this.showVideoPlay(text)}>查看</a>
-                  <a className="theme-color downloadvideo" href={downloadurl} download="">下载</a>
+                  <a className="theme-color downloadvideo" onClick={(e) => this.downLoadVideo(text.VIDEOURL, text.BASQBH)}>下载</a>
                 </div>)
               }
             },
@@ -90,6 +94,15 @@ class VideoHistory extends React.Component{
         })
       }else{
         message.error("视频正在生成，请稍后...");
+      }
+    }
+    downLoadVideo(url, BASQBH){
+      if(!url){
+        message.error("视频正在生成，请稍后...");
+      }else{
+        var downloadurl = url + "?download_name=" + BASQBH;
+        window.location = downloadurl;
+        // window.open(downloadurl);
       }
     }
     videoListStatus(code){

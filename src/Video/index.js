@@ -294,7 +294,7 @@ class Video extends React.Component {
     }
     // 重复登录被T
     _onKickout = () => {
-        alert("请勿重复连接！");
+        // alert("请勿重复连接！");
     }
     // 服务器超时
     _onRelayTimeout = (msg) => {
@@ -387,39 +387,38 @@ class Video extends React.Component {
                     </div>
                     <div className="video-right-wrap">
                         <div className="video-right-video-wrap">
-                            <div className="customer-service"></div>
+                            <div className="customer-service">
+                                <div className="mask-left"></div>
+                                <div className="mask-right"></div>
+                            </div>
                         </div>
                         <div className="client-info">
                             <Tabs defaultActiveKey="1">
                                 <TabPane tab="客户信息" key="1">
                                     <div className="tab-wap">
-                                        <p>姓名: {this.state.data.basqxm}</p>
-                                        <p>身份证号: {this.state.data.bazjhm}</p>
-                                        <p>手机号: {this.state.data.basjhm}</p>
-                                        <p>现住址: 河南省郑州市管城回族区</p>
-                                        <p>工作单位: 河南省郑州市管城回族区亚新广场</p>
+                                        <p>姓名: {this.state.data.BASQXM}</p>
+                                        <p>身份证号: {this.state.data.BAZJHM}</p>
+                                        <p>手机号: {this.state.data.BASJHM}</p>
+                                        <p>现住址: {this.state.data.ZADYMC}</p>
+                                        <p>工作单位: {this.state.data.BASQDW}</p>
                                     </div>
                                 </TabPane>
                                 <TabPane tab="贷款信息" key="2">
                                     <div className="tab-wap">
-                                        <p>贷款金额: 168500.0</p>
-                                        <p>首付金额: 54400.0</p>
-                                        <p>年限: 3年</p>
-                                        <p>还款方式: 分期还款</p>
+                                        <p>贷款金额: {this.state.data.BARZZE}</p>
+                                        <p>首付金额: {this.state.data.BASFJE}</p>
+                                        <p>年限: {this.state.data.BARZQX}期</p>
+                                        <p>还款方式: {this.state.data.BAHKFS}</p>
                                     </div>
                                 </TabPane>
                                 <TabPane tab="车辆信息" key="3">
                                     <div className="tab-wap">
-                                        <p>品牌: 大众</p>
-                                        <p>颜色: 黑色</p>
-                                        <p>车价: 222900.0</p>
+                                        <p>品牌: {this.state.data.BACLPP}</p>
+                                        <p>颜色: {this.state.data.BACLYS}</p>
+                                        <p>车价: {this.state.data.BARZJE}</p>
                                     </div>
                                 </TabPane>
                             </Tabs>
-                            {/* <h2>基本信息</h2>
-                            <p>姓名: {this.state.data.basqxm}</p>
-                            <p>手机号: {this.state.data.basjhm}</p>
-                            <p>身份证号: {this.state.data.bazjhm}</p> */}
                             <RemarkForm getRemark={this.setRemark.bind(this)}></RemarkForm>
                         </div>
                     </div>

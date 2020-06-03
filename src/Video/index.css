@@ -3,67 +3,96 @@
     height: 100%;
 }
 .Video-wrap{
-    width: 800px;
-    height: 580px;
+    width: 950px;
+    height: 638px;
     margin: 0 auto;
-    margin-top: 30px;
+    margin-top: 20px;
     display: flex;
     justify-content: space-between;
 }
 .video-left-wrap{
-    width: 322px;
+    width: 465px;
     height: 100%;
     background: url(../assets/macbook.png) no-repeat left top;
     background-size:100% 100%;
-    padding: 28px 10px 15px 10px;
+    padding: 25px 10px 15px 10px;
     box-sizing: border-box;
 }
 .coustom-video{
     width: 100%;
     height: 100%;
-    background: #000;
+    background: #ffffff;
     display: flex;
     align-items: center;
+    overflow: hidden;
 }
 .far-video{
-    width: 100%;
-    height: 100%;
+    width: 450px;
+    height: 600px;
+    margin-left: -3px;
 }
+
+
+
+
 .video-right-wrap{
-    width: 467px;
+    width: 470px;
     height: 100%;
 }
 .video-right-video-wrap{
-    width: 467px;
-    height: 265px;
+    width: 100%;
+    height: 300px;
     background: url(../assets/macbooksmall.png) no-repeat left top;
     background-size:100% 100%;
     padding: 16px 0 0 52px;
     box-sizing: border-box;
 }
+/* 电脑框 */
 .customer-service{
-    width: 362px;
-    height: 226px;
+    width: 365px;
+    height: 265px;
     background: #000;
+    position: relative;
+    overflow: hidden;
+}
+#local{
+    max-width: 365px;
+    max-height: 265px;
+    display: block;
+    margin: 0 auto;
+}
+.mask-left{
+    width: 20%;
+    height: 100%;
+    background: #000;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 9;
+}
+.mask-right{
+    width: 20%;
+    height: 100%;
+    background: #000;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 9;
 }
 .client-info{
-    width: 375px;
+    width: 380px;
     height: 300px;
     background: rgba(255, 255, 255, 0.5);
     border-radius: 5px;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 30px;
     padding: 15px 20px;
     box-sizing: border-box;
 }
 .client-info p{
     color: rgba(0, 0, 0, 0.65);
 }
-#local{
-    width: 362px;
-    height: 226px;
-    margin: 0 auto;
-}
+
 .btn-wrap{
     width: 100%;
     margin-top: 30px;
