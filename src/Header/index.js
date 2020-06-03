@@ -6,6 +6,7 @@ class Header extends React.Component{
         super(props)
 		this.state = {
 			userName:Cookies.get('userName'),
+			roleName:Cookies.get('roleName'),
 			theme:1,
 		}
     }
@@ -15,6 +16,7 @@ class Header extends React.Component{
     }
 	quitLogin(){
 		Cookies.remove("userName");
+		Cookies.remove("roleName");
 		this.props.history.push("/Login");
 	}
 	changeTheme(n){
@@ -46,7 +48,7 @@ class Header extends React.Component{
 							this.props.userFlag && <div className="person">
 							<i></i>
 							<a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-								欢迎进入，{this.state.userName}
+								欢迎进入，{this.state.roleName}
 							</a>
 							<div className="quit" onClick={(e) => this.quitLogin()}></div>
 						</div>

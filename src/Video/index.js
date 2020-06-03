@@ -2,7 +2,7 @@
 import React from 'react';
 import './index.css';
 import '../config.js';
-import { Button} from 'antd';
+import { Button, Tabs} from 'antd';
 import Cookies from 'js-cookie'
 import Header from '../Header/index.js';
 import Footer from '../Footer/index';
@@ -13,7 +13,7 @@ import 'antd/es/modal/style/css'; // 加载 CSS
 import message from 'antd/es/message'; // 加载 JS
 import 'antd/es/message/style/css'; // 加载 CSS
 
-
+const { TabPane } = Tabs;
 const { confirm } = Modal;
 
 const opts = {
@@ -390,10 +390,36 @@ class Video extends React.Component {
                             <div className="customer-service"></div>
                         </div>
                         <div className="client-info">
-                            <h2>基本信息</h2>
+                            <Tabs defaultActiveKey="1">
+                                <TabPane tab="客户信息" key="1">
+                                    <div className="tab-wap">
+                                        <p>姓名: {this.state.data.basqxm}</p>
+                                        <p>身份证号: {this.state.data.bazjhm}</p>
+                                        <p>手机号: {this.state.data.basjhm}</p>
+                                        <p>现住址: {this.state.data.basjhm}</p>
+                                        <p>工作单位: {this.state.data.basjhm}</p>
+                                    </div>
+                                </TabPane>
+                                <TabPane tab="贷款信息" key="2">
+                                    <div className="tab-wap">
+                                        <p>贷款金额: {this.state.data.basqxm}</p>
+                                        <p>首付金额: {this.state.data.bazjhm}</p>
+                                        <p>年限: {this.state.data.basjhm}</p>
+                                        <p>还款方式: {this.state.data.basjhm}</p>
+                                    </div>
+                                </TabPane>
+                                <TabPane tab="车辆信息" key="3">
+                                    <div className="tab-wap">
+                                        <p>品牌: {this.state.data.basjhm}</p>
+                                        <p>颜色: {this.state.data.bazjhm}</p>
+                                        <p>车价: {this.state.data.basqxm}</p>
+                                    </div>
+                                </TabPane>
+                            </Tabs>
+                            {/* <h2>基本信息</h2>
                             <p>姓名: {this.state.data.basqxm}</p>
                             <p>手机号: {this.state.data.basjhm}</p>
-                            <p>身份证号: {this.state.data.bazjhm}</p>
+                            <p>身份证号: {this.state.data.bazjhm}</p> */}
                             <RemarkForm getRemark={this.setRemark.bind(this)}></RemarkForm>
                         </div>
                     </div>

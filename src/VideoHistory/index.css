@@ -45,3 +45,9 @@
     -webkit-animation-name: fadeInRight;
     animation-name: fadeInRight
 }
+.downloadvideo{
+    margin-left: 8px;
+}
+.originvideo{
+    outline: none;
+}

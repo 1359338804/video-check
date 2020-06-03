@@ -45,9 +45,6 @@ class VideoList extends React.Component{
         };
     }
     componentDidMount(){
-      if(!Cookies.get('userName')){
-        this.props.history.push('/Login');
-      }
       document.title = "众睿资服";
       const { pagination } = this.state;
       this.getList(pagination);

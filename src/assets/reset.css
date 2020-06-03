@@ -63,6 +63,12 @@
 .ant-pagination-item:focus{
     border-color: #d3ba62;
 }
+.ant-tabs-nav .ant-tabs-tab-active{
+    color: #d3ba62;
+}
+.ant-tabs-nav .ant-tabs-tab:hover {
+    color: #d3ba62;
+}
 /* .ant-input:focus{
     border-color: #d3ba62;
     box-shadow: 0 0 0 2px rgb(211, 186, 98,0.2)

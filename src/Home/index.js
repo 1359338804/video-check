@@ -22,6 +22,9 @@ class Home extends React.Component{
 		}
     }
     componentDidMount(){
+		if(!Cookies.get('userName')){
+			this.props.history.push('/Login');
+		}
 		document.title = "众睿资服";
 		timer = setInterval(()=>{
 			this.intervalGetList();

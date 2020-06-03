@@ -26,6 +26,7 @@ class LoginForm extends React.Component {
                     that.props.showLoading(false);
                     if(res.response_code === "000000"){
                         console.log(res)
+                        Cookies.set('roleName',res.roleName);
                         Cookies.set('userName',values.userName);
                         that.props.history.push({ pathname : '/Home'});
                     }else{

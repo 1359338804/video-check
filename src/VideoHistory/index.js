@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, message, Modal} from 'antd';
+import { Table, message, Modal } from 'antd';
 import { Player } from 'video-react';
 import "video-react/dist/video-react.css";
 import Cookies from 'js-cookie'
@@ -63,16 +63,17 @@ class VideoHistory extends React.Component{
               key: 'VIDEOURL',
               width:100,
               render: (text, row, index) => {
-                return (<a className="theme-color" onClick={(e) => this.showVideoPlay(text)}>查看</a>); //eslint-disable-line
+                var downloadurl = text.VIDEOURL + "?download_name=mp4";
+                return(<div>
+                  <a className="theme-color" onClick={(e) => this.showVideoPlay(text)}>查看</a>
+                  <a className="theme-color downloadvideo" href={downloadurl} download="">下载</a>
+                </div>)
               }
             },
           ]
         };
     }
     componentDidMount(){
-      if(!Cookies.get('userName')){
-        this.props.history.push('/Login');
-      }
       document.title = "众睿资服";
       const { pagination } = this.state;
       this.getList(pagination);
@@ -81,8 +82,11 @@ class VideoHistory extends React.Component{
       console.log(params)
       if(params.VIDEOURL){
         this.setState({
-          VIDEOURL: params.VIDEOURL,//"https://media.w3.org/2010/05/sintel/trailer_hd.mp4",
-          visible:true,
+          VIDEOURL: params.VIDEOURL
+        },() => {
+          this.setState({
+            visible:true,
+          })
         })
       }else{
         message.error("视频正在生成，请稍后...");
@@ -177,7 +181,7 @@ class VideoHistory extends React.Component{
         	dataSource={data}
         	pagination={pagination}
         	loading={loading}
-          rowKey={record => record.BASQBH+Math.random()}
+          rowKey={record => String(record.BASQBH)+Math.random()}
           scroll={{ y: 330 }}
         	onChange={this.handleTableChange}
           />
@@ -190,15 +194,19 @@ class VideoHistory extends React.Component{
           height="600px"
           maskClosable={false}
         >
+          {/* <video className="originvideo" controls="controls" autoPlay="autoPlay" width="852" height="605">
+            <source src={this.state.VIDEOURL} type="video/mp4" />
+          </video> */}
           <Player
-            width="100%"
-            height="100%"
-            preload="none"
+            fluid={false}
+            width={852} 
+            height={605}
+            preload="auto"
             // poster="./../assets/logo.png"
             src={this.state.VIDEOURL}
             autoPlay={true}
           />
-        </Modal>
+        </Modal> 
         </div>
       )
     }
