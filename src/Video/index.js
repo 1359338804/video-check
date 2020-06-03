@@ -396,23 +396,23 @@ class Video extends React.Component {
                                         <p>姓名: {this.state.data.basqxm}</p>
                                         <p>身份证号: {this.state.data.bazjhm}</p>
                                         <p>手机号: {this.state.data.basjhm}</p>
-                                        <p>现住址: {this.state.data.basjhm}</p>
-                                        <p>工作单位: {this.state.data.basjhm}</p>
+                                        <p>现住址: 河南省郑州市管城回族区</p>
+                                        <p>工作单位: 河南省郑州市管城回族区亚新广场</p>
                                     </div>
                                 </TabPane>
                                 <TabPane tab="贷款信息" key="2">
                                     <div className="tab-wap">
-                                        <p>贷款金额: {this.state.data.basqxm}</p>
-                                        <p>首付金额: {this.state.data.bazjhm}</p>
-                                        <p>年限: {this.state.data.basjhm}</p>
-                                        <p>还款方式: {this.state.data.basjhm}</p>
+                                        <p>贷款金额: 168500.0</p>
+                                        <p>首付金额: 54400.0</p>
+                                        <p>年限: 3年</p>
+                                        <p>还款方式: 分期还款</p>
                                     </div>
                                 </TabPane>
                                 <TabPane tab="车辆信息" key="3">
                                     <div className="tab-wap">
-                                        <p>品牌: {this.state.data.basjhm}</p>
-                                        <p>颜色: {this.state.data.bazjhm}</p>
-                                        <p>车价: {this.state.data.basqxm}</p>
+                                        <p>品牌: 大众</p>
+                                        <p>颜色: 黑色</p>
+                                        <p>车价: 222900.0</p>
                                     </div>
                                 </TabPane>
                             </Tabs>

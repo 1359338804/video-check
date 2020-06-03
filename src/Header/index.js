@@ -35,7 +35,10 @@ class Header extends React.Component{
             <div className="header">
 				<div className="header-content">
 					<div className="header-title">
-						<div className="header-logo"></div>
+						{/* <div className="header-logo"></div> */}
+						<div className="header-logo-text">
+						郑州银行-众睿资服合作项目
+						</div>
 						<div className="header-text">{this.props.title}</div>
 					</div>
 					<div className="header-right">

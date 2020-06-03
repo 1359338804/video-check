@@ -25,6 +25,13 @@
 	background-size: 100% 100%;
 	margin-right: 30px;
 }
+.header-logo-text{
+	height: 33px;
+	line-height: 33px;
+	font-size: 26px;
+	padding-right: 15px;
+	font-family: Avenir,helvetica neue,Arial,Helvetica,sans-serif;
+}
 .header-title .header-text{
 	height: 33px;
 	padding-left: 15px;
