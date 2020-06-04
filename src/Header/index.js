@@ -1,5 +1,6 @@
 import React from 'react';
 import './index.css'
+import {message} from 'antd';
 import Cookies from 'js-cookie'
 class Header extends React.Component{
     constructor(props){
@@ -15,9 +16,20 @@ class Header extends React.Component{
 		this.changeThemeState();
     }
 	quitLogin(){
-		Cookies.remove("userName");
-		Cookies.remove("roleName");
-		this.props.history.push("/Login");
+		var that = this;
+		fetch(`${global.constants.apiUrl}app/video/logout`, {
+			method: 'post'
+		})
+		.then(res => res.json())
+		.then(res => {
+			if(res.code === "000000"){
+				Cookies.remove("userName");
+				Cookies.remove("roleName");
+				that.props.history.push("/Login");
+			}else{
+				message.error(res.response_msg);
+			}
+		})
 	}
 	changeTheme(n){
 		Cookies.set("theme", n);

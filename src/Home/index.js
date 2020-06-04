@@ -82,7 +82,7 @@ class Home extends React.Component{
 	showTip(info){
 		var that = this;
 		var search = "?USERID="+ that.compileStr(info.USERID)+"&usersig="+that.compileStr(info.USERSIN)+"&roomid="+that.compileStr(info.SPFJID);
-		Modal.info({
+		Modal.confirm({
 			title: '视频待面签',
 			content: (
 			  <div>
@@ -90,9 +90,13 @@ class Home extends React.Component{
 				<p>点击确定将会进行视频面签</p>
 			  </div>
 			),
-			okText:"确定",
+			cancelText:"确定",
+			okText:"呼入",
 			onOk() {
 				that.props.history.push({pathname:'/Video',search: search});
+			},
+			onCancel() {
+				clearInterval(timer);
 			},
 		});
 	}

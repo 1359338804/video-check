@@ -34,11 +34,24 @@ class VideoList extends React.Component{
               dataIndex: 'SPFQSJ',
               key: 'SPFQSJ',
             },{
+              title: '状态',
+              dataIndex: 'SPMQZT',
+              key: 'SPMQZT',
+              render:(text, row, index) => {
+                return this.videoListStatus(text);
+              }
+            },{
               title: '操作',
               key: 'action',
               render: (text, row, index) => {
-                var path = "/Video?USERID="+ this.compileStr(this.state.data[index].USERID)+"&usersig="+this.compileStr(this.state.data[index].USERSIN)+"&roomid="+this.compileStr(this.state.data[index].SPFJID);
-                return (<Link className="theme-color" to={path} >视频接入</Link>);
+                if(text.SPMQZT == 2){
+                  return (<a className="theme-color" onClick={(e) => this.enterVideoRoom(text.SPMQZT)} >视频接入</a>);
+                }else if(text.SPMQZT == 3){
+                  return (<a className="theme-color" onClick={(e) => this.enterVideoRoom(text.SPMQZT)} >视频接入</a>);
+                }else if(text.SPMQZT == 1){
+                  var path = "/Video?USERID="+ this.compileStr(this.state.data[index].USERID)+"&usersig="+this.compileStr(this.state.data[index].USERSIN)+"&roomid="+this.compileStr(this.state.data[index].SPFJID);
+                  return (<Link className="theme-color" to={path} >视频接入</Link>);
+                }
               }
             },
           ]
@@ -54,6 +67,16 @@ class VideoList extends React.Component{
         this.refresh();
       }
     }
+    // 进房
+    enterVideoRoom(SPMQZT){
+      if(SPMQZT == 2){
+        message.error("审核中,不能加入");
+        return false;
+      }else if(SPMQZT == 3){
+        message.error("审核完成,不能加入");
+        return false;
+      }
+    }
     compileStr (code) {
       var c = String.fromCharCode(code.charCodeAt(0) + code.length)
       for (var i =1; i < code.length; i++) {
@@ -61,6 +84,22 @@ class VideoList extends React.Component{
       }
       return escape(c)
     };
+    // 状态字典匹配
+    videoListStatus(code){
+      switch(parseInt(code)){
+        case 1:
+          return "等待接入";
+          break; //eslint-disable-line
+        case 2:
+          return "审核中";
+          break; //eslint-disable-line
+        case 3:
+          return "审核完成";
+          break; //eslint-disable-line
+        default:
+          return ""
+      }
+    }
     // 分页
     handleTableChange = (pagination, filters, sorter) => {
       let data = Object.assign({}, this.state.pagination, { current: pagination.current })

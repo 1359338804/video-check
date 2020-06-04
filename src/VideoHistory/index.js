@@ -203,7 +203,7 @@ class VideoHistory extends React.Component{
           footer={null}
           onCancel={(e) => this.handleCancel()}
           width="900px"
-          height="600px"
+          // height="600px"
           maskClosable={false}
         >
           {/* <video className="originvideo" controls="controls" autoPlay="autoPlay" width="852" height="605">
@@ -212,7 +212,7 @@ class VideoHistory extends React.Component{
           <Player
             fluid={false}
             width={852} 
-            height={605}
+            // height={605}
             preload="auto"
             // poster="./../assets/logo.png"
             src={this.state.VIDEOURL}
