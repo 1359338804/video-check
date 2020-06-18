@@ -17,15 +17,22 @@ class Header extends React.Component{
     }
 	quitLogin(){
 		var that = this;
-		fetch(`${global.constants.apiUrl}app/video/logout`, {
-			method: 'post'
+		// ?token=${Cookies.get("token")}
+		fetch(`${global.constants.apiUrl}app/video/logout?token=${Cookies.get("token")}`, {
+			method: 'get',
+			// headers:{
+			// 	"token":Cookies.get("token")
+			// }
 		})
 		.then(res => res.json())
 		.then(res => {
 			if(res.code === "000000"){
 				Cookies.remove("userName");
 				Cookies.remove("roleName");
+				Cookies.remove("token");
 				that.props.history.push("/Login");
+			}else if(res.code === "E00001"){
+				that.props.history.push('/Login');
 			}else{
 				message.error(res.response_msg);
 			}

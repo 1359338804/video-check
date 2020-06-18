@@ -52,9 +52,12 @@ class Home extends React.Component{
 		let that = this;
 		fetch(`${global.constants.apiUrl}app/video/getList`, {
 			method: 'post',
+			headers:{
+				"token":Cookies.get("token")
+			},
 			body:JSON.stringify({
 				"type":"1",
-				"userName":that.state.userName,
+				// "userName":that.state.userName,
 				"current": 1,
 				"pageSize": 10,
 			})
@@ -73,7 +76,7 @@ class Home extends React.Component{
 						isRefresh:false,
 					})
 				}
-			}else if(res.response_code === "666666"){
+			}else if(res.response_code === "E00001"){
 				that.props.history.push('/Login');
 			}
 		})
@@ -87,7 +90,7 @@ class Home extends React.Component{
 			content: (
 			  <div>
 				<p>有新的视频待面签消息，视频发起人：{info.SPFQRY}</p>
-				<p>点击确定将会进行视频面签</p>
+				<p>点击呼入将会进行视频面签</p>
 			  </div>
 			),
 			cancelText:"确定",

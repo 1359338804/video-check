@@ -11,7 +11,7 @@ class LoginForm extends React.Component {
     handleSubmit = e => {
         e.preventDefault();
         var that = this;
-        that.props.showLoading(true);
+        that.props.news.setLoading(true);
         that.props.form.validateFields((err, values) => {
             if (!err) {
                 var data = {
@@ -23,10 +23,10 @@ class LoginForm extends React.Component {
                 })
                 .then(res => res.json())
                 .then(res => {
-                    that.props.showLoading(false);
+                    that.props.news.setLoading(false);
                     if(res.response_code === "000000"){
-                        console.log(res)
                         Cookies.set('roleName',res.result.zAZHMC);
+                        Cookies.set('token',res.token);
                         Cookies.set('userName',values.userName);
                         that.props.history.push({ pathname : '/Home'});
                     }else{

@@ -82,12 +82,21 @@ class Video extends React.Component {
         // 获取用户信息
         fetch(`${global.constants.apiUrl}VideoFacebookServlet?basqbh=${opts.roomid}&cxlx=personInfo`, {
             method: 'POST',
+            headers:{
+				"token":Cookies.get("token")
+			},
         })
         .then(res => res.json())
         .then(res => {
-            this.setState({
-                data:res.date
-            })
+            if(res.code === "000000"){
+                this.setState({
+                    data:res.date
+                })
+            }else if(res.code === "E00001"){
+				that.props.history.push('/Login');
+			}else{
+                message.error(res.message);
+            }
         })
     }
     getQueryString(name) {
@@ -107,11 +116,16 @@ class Video extends React.Component {
         });
         fetch(`${global.constants.apiUrl}app/VideoFacebookEnd`, {
             method: 'POST',
+            headers:{
+                "token":Cookies.get("token")
+            },
             body:data
         })
         .then(res => res.json())
         .then(res => {
-            if(res.response_code === "000000"){}else{
+            if(res.response_code === "000000"){
+
+            }else{
                 message.error(res.response_msg);
             }
         })
@@ -224,11 +238,18 @@ class Video extends React.Component {
         console.log(data);
         fetch(`${global.constants.apiUrl}app/video/joinRoom`, {
             method: 'POST',
+            headers:{
+				"token":Cookies.get("token")
+			},
             body:data
         })
         .then(res => res.json())
         .then(res => {
-            if(res.response_code === "000000"){}else{
+            if(res.response_code === "000000"){
+                
+            }else if(res.response_code === "E00001"){
+				that.props.history.push('/Login');
+			}else{
                 message.error(res.response_msg);
             }
         })
@@ -242,13 +263,18 @@ class Video extends React.Component {
         });
         fetch(`${global.constants.apiUrl}app/VideoFacebookEnd`, {
             method: 'POST',
+            headers:{
+                "token":Cookies.get("token")
+            },
             body:data
         })
         .then(res => res.json())
         .then(res => {
             if(res.response_code === "000000"){
                 that.props.history.goBack();
-            }else{
+            }else if(res.response_code === "E00001"){
+				that.props.history.push('/Login');
+			}else{
                 message.error(res.response_msg);
             }
         })
@@ -327,6 +353,9 @@ class Video extends React.Component {
                 return new Promise((resolve, reject) => {
                     fetch(`${global.constants.apiUrl}VideoFacebookServlet?basqbh=${opts.roomid}&mqshzt=${mqshzt}&cxlx=facebookResult&spmqbz=${that.state.remark}`, {
                         method: 'POST',
+                        headers:{
+                            "token":Cookies.get("token")
+                        },
                     })
                     .then(res => res.json())
                     .then(res => {
@@ -338,6 +367,8 @@ class Video extends React.Component {
                     if(res.code === "000000"){
                         // that.hangUp();
                         that.props.history.goBack();
+                    }else if(res.code === "E00001"){
+                        that.props.history.push('/Login');
                     }else{
                         message.error(res.message);
                     }

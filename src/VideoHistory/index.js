@@ -24,6 +24,8 @@ class VideoHistory extends React.Component{
           loading: false,
           visible: false,
           VIDEOURL:"",
+          videoStartTime:"",
+          videoEndTime:"",
           // 申请编号，客户姓名，证件号码，视频发起人员，视频审核人员，状态（等待接入，审核完成），视频发起时间，备注。
           columns: [
             {
@@ -81,12 +83,15 @@ class VideoHistory extends React.Component{
       document.title = "众睿资服";
       const { pagination } = this.state;
       this.getList(pagination);
+
     }
     showVideoPlay(params){
       console.log(params)
       if(params.VIDEOURL){
         this.setState({
-          VIDEOURL: params.VIDEOURL
+          VIDEOURL: params.VIDEOURL,
+          videoStartTime:params.SPFQSJ,
+          videoEndTime:params.SPJSSJ
         },() => {
           this.setState({
             visible:true,
@@ -140,9 +145,12 @@ class VideoHistory extends React.Component{
       this.setState({ loading: true });
       fetch(`${global.constants.apiUrl}app/video/getList`, {
         method: 'post',
+        headers:{
+          "token":Cookies.get("token")
+        },
         body:JSON.stringify({
           "type":"3",
-          "userName":that.state.userName,
+          // "userName":that.state.userName,
           "customer":that.state.customer,
           "startTime":that.state.startTime,
           "endTime":that.state.endTime,
@@ -206,18 +214,20 @@ class VideoHistory extends React.Component{
           // height="600px"
           maskClosable={false}
         >
-          {/* <video className="originvideo" controls="controls" autoPlay="autoPlay" width="852" height="605">
-            <source src={this.state.VIDEOURL} type="video/mp4" />
-          </video> */}
-          <Player
-            fluid={false}
-            width={852} 
-            // height={605}
-            preload="auto"
-            // poster="./../assets/logo.png"
-            src={this.state.VIDEOURL}
-            autoPlay={true}
-          />
+          <div className="history-video-wrap">
+            { /*<div className="time-wrap">
+              {this.state.videoStartTime} ~ {this.state.videoEndTime}
+            </div> */}
+            <Player
+              fluid={false}
+              width={852} 
+              // height={605}
+              preload="auto"
+              // poster="./../assets/logo.png"
+              src={this.state.VIDEOURL}
+              autoPlay={true}
+            />
+          </div>
         </Modal> 
         </div>
       )

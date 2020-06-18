@@ -51,3 +51,14 @@
 .originvideo{
     outline: none;
 }
+.time-wrap{
+    color: #d3ba62;
+    position: absolute;
+    top: 10px;
+    width: 100%;
+    text-align: center;
+    z-index: 99999;
+}
+.history-video-wrap{
+    position: relative;
+}

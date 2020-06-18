@@ -114,9 +114,12 @@ class VideoList extends React.Component{
       this.setState({ loading: true });
       fetch(`${global.constants.apiUrl}app/video/getList`, {
         method: 'post',
+        headers:{
+          "token":Cookies.get("token")
+        },
         body:JSON.stringify({
           "type":"1",
-          "userName":that.state.userName,
+          // "userName":that.state.userName,
           ...params
         })
       })

@@ -27,7 +27,7 @@ class Login extends React.Component{
                     <Header title="众睿资服" history={this.props.history} userFlag={false}/>
                     <div className="content">
                         <div className="login-img"></div>
-                        <LoginForm history={this.props.history} showLoading={(e)=>this.setLoading()}></LoginForm>
+                        <LoginForm history={this.props.history} news={this}></LoginForm>
                     </div>
                     <Footer />
                 </Spin>
